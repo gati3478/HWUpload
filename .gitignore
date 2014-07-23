@@ -1,21 +1,18 @@
-#################
-## Eclipse
-#################
-
-build/
-*.pydevproject
 .project
+*.pydevproject
 .metadata
+.gradle
 bin/
 tmp/
 *.tmp
 *.bak
 *.swp
 *~.nib
-local.properties
 .classpath
+local.properties
 .settings/
 .loadpath
+build/
 
 # External tool builders
 .externalToolBuilders/
@@ -30,11 +27,16 @@ local.properties
 .buildpath
 *.class
 
+# sbteclipse plugin 
+.target
+
+# TeXlipse plugin
+.texlipse
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
