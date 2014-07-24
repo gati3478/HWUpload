@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:web="http://xmlns.jcp.org/xml/ns/javaee">
+	<!-- TODO: Add <servlet> tags for each servlet here. -->
+	<!-- TODO: Add <servlet-mapping> tags for each <servlet> here. -->
+	<!-- TODO: Optionally add a <welcome-file-list> tag to display a welcome 
+		file. -->
+	<resource-ref>
+		<description>HWUpload Database</description>
+		<res-ref-name>jdbc/hwupload</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+</web-app>
