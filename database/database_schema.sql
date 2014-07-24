@@ -1,97 +1,73 @@
-drop schema if exists hwupload;
-create schema  hwupload;
+DROP SCHEMA IF EXISTS hwupload;
+CREATE SCHEMA  hwupload;
+USE hwupload;
 
-use hwupload;
-
-create table users(
-	id int not null auto_increment primary key,
-	e_mail varchar(32) not null unique, -- credantials only
-	full_name varchar(64),
-	status enum('student', 'lecturer', 'section leader') -- student=1, lecturer=2, section leader=3
+CREATE TABLE users (
+	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	email_creds VARCHAR(32) NOT NULL UNIQUE, -- credantials only (like gpetr12, not gpetr12@freeuni.edu.ge)
+	full_name NVARCHAR(64),
+	status ENUM('student', 'lecturer', 'section leader') -- student = 1, lecturer = 2, section leader = 3
 );
 
-create table courses(
-	id int not null auto_increment primary key,
-	name varchar(128) not null,
-	description text,
-	year char(9), -- samwuxarod, shemdeg aTaTaswleulshi aghar imushavebs
-	begin date,
-	end date
+CREATE TABLE courses (
+	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name NVARCHAR(128) NOT NULL,
+	description TEXT,
+	begin_date DATE,
+	end_date DATE
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+CREATE TABLE homework (
+	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name NVARCHAR(64) NOT NULL,
+	description TEXT,
+	number TINYINT,
+	course_id INT,
+	FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+	deadline DATETIME NOT NULL,
+	active BOOLEAN DEFAULT TRUE,
+	forbid_latedays BOOLEAN DEFAULT FALSE
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+
+CREATE TABLE homework_forms (
+	hw_id INT,
+	regex NVARCHAR(128),
+	max_filesize INT DEFAULT 12, -- in MBs
+	FOREIGN KEY (hw_id) REFERENCES homework(id) ON DELETE CASCADE
 );
 
-create table homework(
-	id int not null auto_increment primary key,
-	name varchar(40) not null,
-	description text,
-	number tinyint,
-	course_id int,
-	foreign key(course_id)
-		references courses(id)
-		on delete cascade,
-	deadline datetime not null,
-	active boolean default true,
-	forbid_latedays boolean default false
+CREATE TABLE files (
+	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	filename NVARCHAR(256) NOT NULL,
+	upload_time DATETIME DEFAULT NOW(),
+	student_id INT,
+	hw_id INT,
+	FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+	FOREIGN KEY (hw_id) REFERENCES homework(id) ON DELETE CASCADE
 );
 
-create table homework_forms(
-	hw_id int,
-	foreign key(hw_id)
-		references homework(id)
-		on delete cascade,
-	regex varchar(100),
-	max_size int default 10 -- in Mbs
+CREATE TABLE courses_lecturers (
+	course_id INT,
+	lecturer_id INT,
+	FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+	FOREIGN KEY (lecturer_id) REFERENCES users(id) ON DELETE CASCADE	
 );
 
-create table files(
-	id int not null auto_increment primary key,
-	filename varchar(100) not null,
-	upload_time datetime default now(),
-	student_id int, 
-	foreign key(student_id)
-		references users(id)
-		on delete cascade,
-	hw_id int,
-	foreign key(hw_id)
-		references homework(id)
-		on delete cascade
+CREATE TABLE course_students (
+	course_id INT,
+	latedays_num INT DEFAULT 0,
+	latedays_len INT,
+	student_id INT,
+	tutor_id INT,
+	FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
+	FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+	FOREIGN KEY (tutor_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-create table courses_lecturers(
-	course_id int,
-	foreign key(course_id)
-		references courses(id)
-		on delete cascade,
-	lecturer_id int,
-	foreign key(lecturer_id)
-		references users(id)
-		on delete cascade	
-);
-
-create table course_students(
-	course_id int,
-	foreign key(course_id)
-		references courses(id)
-		on delete cascade,
-	student_id int,
-	foreign key(student_id)
-		references users(id)
-		on delete cascade,
-	tutor_id int,
-	foreign key(tutor_id)
-		references users(id)
-		on delete cascade,
-	latedays_num int default 0,
-	latedays_len int 
-);
-
-create table latedays_history(
-	student_id int,
-	foreign key(student_id)
-		references users(id)
-		on delete cascade,
-	hw_id int,
-	foreign key(hw_id)
-		references homework(id)
-		on delete cascade,
-	latedays_taken int
+CREATE TABLE latedays_history (
+	student_id INT,
+	hw_id INT,
+	latedays_taken INT,
+	FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
+	FOREIGN KEY (hw_id) REFERENCES homework(id) ON DELETE CASCADE
 );
