@@ -23,10 +23,10 @@ CREATE TABLE homework (
 	description TEXT,
 	number TINYINT,
 	course_id INT,
-	FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
 	deadline DATETIME NOT NULL,
 	active BOOLEAN DEFAULT TRUE,
-	forbid_latedays BOOLEAN DEFAULT FALSE
+	forbid_latedays BOOLEAN DEFAULT FALSE,
+	FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 CREATE TABLE homework_forms (
