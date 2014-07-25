@@ -7,7 +7,8 @@ CREATE TABLE users (
 	email_creds VARCHAR(32) NOT NULL UNIQUE, -- credantials only (like gpetr12, not gpetr12@freeuni.edu.ge)
 	first_name NVARCHAR(32),
 	last_name NVARCHAR(32),
-	status ENUM('student', 'lecturer', 'section leader') -- student = 1, lecturer = 2, section leader = 3
+	status ENUM('student', 'lecturer'), -- student = 1, lecturer = 2
+	tutor BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE courses (
