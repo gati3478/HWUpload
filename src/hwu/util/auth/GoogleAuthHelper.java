@@ -41,6 +41,11 @@ public final class GoogleAuthHelper {
 	 */
 	private static final String CALLBACK_URI = "http://localhost:8080/HWUpload/index.jsp";
 
+	/**
+	 * Restricting sign-in for specified domain
+	 */
+	public static final String HOSTED_DOMAIN = "freeuni.edu.ge";
+
 	// start google authentication constants
 	private static final Collection<String> SCOPE = Arrays
 			.asList("https://www.googleapis.com/auth/userinfo.profile;https://www.googleapis.com/auth/userinfo.email"
@@ -56,12 +61,11 @@ public final class GoogleAuthHelper {
 
 	/**
 	 * Constructor initializes the Google Authorization Code Flow with CLIENT
-	 * ID, SECRET, and SCOPE
+	 * ID, SECRET, and SCOPE.
 	 */
 	public GoogleAuthHelper() {
 		flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT,
 				JSON_FACTORY, CLIENT_ID, CLIENT_SECRET, SCOPE).build();
-
 		generateStateToken();
 	}
 
@@ -69,26 +73,22 @@ public final class GoogleAuthHelper {
 	 * Builds a login URL based on client ID, secret, callback URI, and scope
 	 */
 	public String buildLoginUrl() {
-
 		final GoogleAuthorizationCodeRequestUrl url = flow
 				.newAuthorizationUrl();
-
-		return url.setRedirectUri(CALLBACK_URI).setState(stateToken).build();
+		return url.setRedirectUri(CALLBACK_URI).setState(stateToken).build()
+				+ "&hd=" + HOSTED_DOMAIN;
 	}
 
 	/**
-	 * Generates a secure state token
+	 * Generates a secure state token.
 	 */
 	private void generateStateToken() {
-
 		SecureRandom sr1 = new SecureRandom();
-
 		stateToken = "google;" + sr1.nextInt();
-
 	}
 
 	/**
-	 * Accessor for state token
+	 * Accessor for state token.
 	 */
 	public String getStateToken() {
 		return stateToken;
@@ -96,14 +96,13 @@ public final class GoogleAuthHelper {
 
 	/**
 	 * Expects an Authentication Code, and makes an authenticated request for
-	 * the user's profile information
+	 * the user's profile information.
 	 * 
 	 * @return JSON formatted user profile information
 	 * @param authCode
 	 *            authentication code provided by google
 	 */
 	public String getUserInfoJson(final String authCode) throws IOException {
-
 		final GoogleTokenResponse response = flow.newTokenRequest(authCode)
 				.setRedirectUri(CALLBACK_URI).execute();
 		final Credential credential = flow.createAndStoreCredential(response,
@@ -117,7 +116,6 @@ public final class GoogleAuthHelper {
 		final String jsonIdentity = request.execute().parseAsString();
 
 		return jsonIdentity;
-
 	}
 
 }
