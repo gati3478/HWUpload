@@ -40,7 +40,7 @@ public final class GoogleAuthHelper {
 	/**
 	 * Callback URI that google will redirect to after successful authentication
 	 */
-	private static final String CALLBACK_URI = "http://localhost:8080/HWUpload/index.jsp";
+	private static final String CALLBACK_URI = "http://localhost:8080/HWUpload/GoogleSign";
 
 	/**
 	 * Restricting sign-in for specified domain
