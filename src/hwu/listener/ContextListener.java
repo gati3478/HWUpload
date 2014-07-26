@@ -1,4 +1,4 @@
-package hwu.listeners;
+package hwu.listener;
 
 import hwu.db.DBInfo;
 
@@ -9,6 +9,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
+
+import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 
 /**
  * Application Lifecycle Listener implementation class ContextListener
@@ -28,7 +30,11 @@ public class ContextListener implements ServletContextListener {
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
 	 */
 	public void contextDestroyed(ServletContextEvent arg0) {
-		// TODO Auto-generated method stub
+		try {
+			AbandonedConnectionCleanupThread.shutdown();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
