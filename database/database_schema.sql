@@ -15,7 +15,7 @@ CREATE TABLE courses (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	name NVARCHAR(128) NOT NULL,
 	description TEXT,
-	begin_date DATE,
+	start_date DATE,
 	end_date DATE
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
