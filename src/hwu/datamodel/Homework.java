@@ -1,6 +1,7 @@
 package hwu.datamodel;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Homework {
 	private int id;
@@ -10,7 +11,7 @@ public class Homework {
 	private Timestamp deadline;
 	private boolean isActive;
 	private boolean latedaysAllowed;
-	private HomeworkForm form;
+	private List<HomeworkForm> form;
 
 	/**
 	 * 
@@ -68,6 +69,14 @@ public class Homework {
 		return latedaysAllowed;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public List<HomeworkForm> getHomeworkForm() {
+		return form;
+	}
+
 	private class HomeworkForm {
 		private String regex;
 		private int maxFilesize;
@@ -76,7 +85,7 @@ public class Homework {
 		 * 
 		 * @return
 		 */
-		private String getRegex() {
+		public String getRegex() {
 			return regex;
 		}
 
@@ -84,7 +93,7 @@ public class Homework {
 		 * 
 		 * @return
 		 */
-		private int getMaxFilesize() {
+		public int getMaxFilesize() {
 			return maxFilesize;
 		}
 
