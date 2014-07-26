@@ -22,6 +22,7 @@ import java.util.Collection;
  * 
  * @version 20130224
  * @author Matyas Danter
+ * @author Giorgi Petriashvili
  */
 public final class GoogleAuthHelper {
 
