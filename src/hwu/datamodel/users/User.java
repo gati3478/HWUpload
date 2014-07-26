@@ -1,6 +1,7 @@
 package hwu.datamodel.users;
 
 public abstract class User {
+	public static final String ATTRIBUTE_NAME = "user";
 	protected int id;
 	protected String email;
 	protected String firstName;
