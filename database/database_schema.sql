@@ -66,6 +66,13 @@ CREATE TABLE course_students (
 	FOREIGN KEY (tutor_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+CREATE TABLE tutor_courses (
+	tutor_id INT,
+	course_id INT,
+	FOREIGN KEY (tutor_id) REFERENCES users(id) ON DELETE CASCADE,
+	FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
+);
+
 CREATE TABLE latedays_history (
 	student_id INT,
 	hw_id INT,
