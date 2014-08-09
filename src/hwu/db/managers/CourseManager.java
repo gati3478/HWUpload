@@ -5,7 +5,7 @@ import java.util.List;
 import hwu.datamodel.Course;
 import hwu.datamodel.users.Lecturer;
 import hwu.datamodel.users.Student;
-import hwu.datamodel.users.Tutor;
+import hwu.datamodel.users.User;
 
 import javax.sql.DataSource;
 
@@ -34,7 +34,7 @@ public class CourseManager extends Manager {
 		return null;
 	}
 
-	public List<Course> getCourses(Tutor tutor) {
+	public List<Course> getAssignedCourses(User tutor) {
 		return null;
 	}
 
