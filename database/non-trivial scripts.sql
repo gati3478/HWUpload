@@ -8,7 +8,7 @@ SELECT courses.name, courses.ID
 		WHERE courses.start_date <= NOW() AND courses.end_date >= NOW(); 
 
 -- Lecturer cabinet
-SELECT courses.name, courses.start_date, courses.ID
+SELECT courses.name, courses.start_date, courses.end_date, courses.ID
 	FROM (SELECT * FROM courses_lecturers WHERE lecturer_id = 1) AS cur_lecturer
 		LEFT JOIN courses ON course_id;
 		
