@@ -40,7 +40,7 @@ public abstract class User {
 	 * 
 	 * @return
 	 */
-	protected int getID() {
+	public int getID() {
 		return id;
 	}
 
@@ -48,7 +48,7 @@ public abstract class User {
 	 * 
 	 * @return
 	 */
-	protected String getEmail() {
+	public String getEmail() {
 		return email;
 	}
 
@@ -56,7 +56,7 @@ public abstract class User {
 	 * 
 	 * @return
 	 */
-	protected String getFirstName() {
+	public String getFirstName() {
 		return firstName;
 	}
 
@@ -64,7 +64,7 @@ public abstract class User {
 	 * 
 	 * @return
 	 */
-	protected String getLastName() {
+	public String getLastName() {
 		return lastName;
 	}
 
@@ -72,7 +72,7 @@ public abstract class User {
 	 * 
 	 * @return
 	 */
-	protected boolean isTutor() {
+	public boolean isTutor() {
 		return isTutor;
 	}
 
