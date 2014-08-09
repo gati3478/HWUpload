@@ -6,7 +6,7 @@ import hwu.datamodel.Course;
 import hwu.datamodel.Homework;
 import hwu.datamodel.users.Lecturer;
 import hwu.datamodel.users.Student;
-import hwu.datamodel.users.Tutor;
+import hwu.datamodel.users.User;
 
 import javax.sql.DataSource;
 
@@ -35,7 +35,7 @@ public class HomeworkManager extends Manager {
 		return null;
 	}
 
-	public List<Homework> getAssignedHomework(Tutor tutor, Course course) {
+	public List<Homework> getAssignedHomework(User tutor, Course course) {
 		return null;
 	}
 
