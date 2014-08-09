@@ -1,10 +1,14 @@
 package hwu.listener;
 
 import hwu.db.DBInfo;
+import hwu.db.managers.CourseManager;
+import hwu.db.managers.HomeworkManager;
+import hwu.db.managers.UserManager;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
@@ -46,7 +50,17 @@ public class ContextListener implements ServletContextListener {
 			Context envContext = (Context) initContext.lookup("java:/comp/env");
 			DataSource dataSource = (DataSource) envContext.lookup("jdbc/"
 					+ DBInfo.DB_NAME);
-			arg0.getServletContext().setAttribute("DataSource", dataSource);
+			UserManager userManager = new UserManager(dataSource);
+			HomeworkManager hwManager = new HomeworkManager(dataSource);
+			CourseManager courseManager = new CourseManager(dataSource);
+			ServletContext servletContext = arg0.getServletContext();
+			servletContext.setAttribute("DataSource", dataSource);
+			servletContext
+					.setAttribute(UserManager.ATTRIBUTE_NAME, userManager);
+			servletContext.setAttribute(CourseManager.ATTRIBUTE_NAME,
+					courseManager);
+			servletContext.setAttribute(HomeworkManager.ATTRIBUTE_NAME,
+					hwManager);
 		} catch (NamingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
