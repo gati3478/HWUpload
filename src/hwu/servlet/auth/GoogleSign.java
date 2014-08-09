@@ -5,6 +5,7 @@ import hwu.util.auth.GoogleAuthHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -63,12 +64,20 @@ public class GoogleSign extends HttpServlet {
 			String firstName = jobject.get("given_name").toString();
 			String lastName = jobject.get("family_name").toString();
 			String hostedDomain = jobject.get("hd").toString();
-			out.println(id);
-			out.println(email);
-			out.println(firstName);
-			out.println(lastName);
-			out.println(hostedDomain);
-			out.print(jobject.toString());
+
+			if (!hostedDomain.equals(GoogleAuthHelper.HOSTED_DOMAIN)) {
+				request.setAttribute("error", true);
+				RequestDispatcher dispatcher = request
+						.getRequestDispatcher("index.jsp");
+				dispatcher.forward(request, response);
+			} else {
+				out.println(id);
+				out.println(email);
+				out.println(firstName);
+				out.println(lastName);
+				out.println(hostedDomain);
+				out.print(jobject.toString());
+			}
 		}
 	}
 

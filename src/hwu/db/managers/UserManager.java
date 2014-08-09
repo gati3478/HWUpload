@@ -2,8 +2,10 @@ package hwu.db.managers;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import hwu.datamodel.users.Lecturer;
 import hwu.datamodel.users.Student;
 import hwu.datamodel.users.User;
 
@@ -40,7 +42,7 @@ public class UserManager extends Manager {
 		statement.setString(3, user.getLastName());
 		if (user instanceof Student)
 			statement.setString(4, "student");
-		else
+		else if (user instanceof Lecturer)
 			statement.setString(4, "lecturer");
 		statement.executeUpdate();
 		con.close();
@@ -50,9 +52,33 @@ public class UserManager extends Manager {
 	 * 
 	 * @param emailCredential
 	 * @return
+	 * @throws SQLException
 	 */
-	public User getUser(String emailCredential) {
-		return null;
+	public User getUser(String emailCredential) throws SQLException {
+		User user = null;
+		Connection con = dataSource.getConnection();
+		String query = "SELECT * FROM users WHERE email_creds = ?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setString(1, emailCredential);
+		ResultSet rs = statement.executeQuery();
+
+		if (rs.next()) {
+			int id = rs.getInt("id");
+			String firstName = rs.getString("first_name");
+			String lastName = rs.getString("last_name");
+			String status = rs.getString("status");
+			int tutor = rs.getInt("tutor");
+			boolean isTutor = false;
+			if (tutor == 1)
+				isTutor = true;
+			if (status.equals("student"))
+				user = new Student(id, emailCredential, firstName, lastName,
+						isTutor);
+			else if (status.equals("lecturer"))
+				user = new Lecturer(id, emailCredential, firstName, lastName,
+						isTutor);
+		}
+		return user;
 	}
 
 }
