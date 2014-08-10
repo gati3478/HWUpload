@@ -78,6 +78,7 @@ public class UserManager extends Manager {
 				user = new Lecturer(id, emailCredential, firstName, lastName,
 						isTutor);
 		}
+		con.close();
 		return user;
 	}
 
