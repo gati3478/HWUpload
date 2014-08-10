@@ -1,9 +1,14 @@
 package hwu.servlet.auth;
 
+import hwu.datamodel.users.Lecturer;
+import hwu.datamodel.users.Student;
+import hwu.datamodel.users.User;
+import hwu.db.managers.UserManager;
 import hwu.util.auth.GoogleAuthHelper;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -59,23 +64,39 @@ public class GoogleSign extends HttpServlet {
 			String info = helper.getUserInfoJson(request.getParameter("code"));
 			JsonElement jelement = new JsonParser().parse(info);
 			JsonObject jobject = jelement.getAsJsonObject();
-			String id = jobject.get("id").toString();
-			String email = jobject.get("email").toString();
-			String firstName = jobject.get("given_name").toString();
-			String lastName = jobject.get("family_name").toString();
-			String hostedDomain = jobject.get("hd").toString();
-
+			String id = jobject.get("id").getAsString();
+			String email = jobject.get("email").getAsString();
+			int atSymbolPos = email
+					.indexOf('@' + GoogleAuthHelper.HOSTED_DOMAIN);
+			String email_cred = email.substring(0, atSymbolPos);
+			String firstName = jobject.get("given_name").getAsString();
+			String lastName = jobject.get("family_name").getAsString();
+			String hostedDomain = jobject.get("hd").getAsString();
+			out.print(hostedDomain);
 			if (!hostedDomain.equals(GoogleAuthHelper.HOSTED_DOMAIN)) {
 				request.setAttribute("error", true);
 				RequestDispatcher dispatcher = request
 						.getRequestDispatcher("index.jsp");
 				dispatcher.forward(request, response);
 			} else {
-				out.println(id);
-				out.println(email);
-				out.println(firstName);
-				out.println(lastName);
-				out.println(hostedDomain);
+				User user = null;
+				boolean isStudent = false;
+				if (email.length() == 22 && Character.isDigit(email.charAt(5))
+						&& Character.isDigit(email.charAt(6)))
+					isStudent = true;
+				if (isStudent)
+					user = new Student(email, firstName, lastName, false);
+				else
+					user = new Lecturer(email, firstName, lastName, false);
+				UserManager userManager = (UserManager) request
+						.getServletContext().getAttribute(
+								UserManager.ATTRIBUTE_NAME);
+				try {
+					userManager.tryAddUser(user);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				out.print(jobject.toString());
 			}
 		}
