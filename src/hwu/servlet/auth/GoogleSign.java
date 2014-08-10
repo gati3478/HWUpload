@@ -72,7 +72,6 @@ public class GoogleSign extends HttpServlet {
 			String firstName = jobject.get("given_name").getAsString();
 			String lastName = jobject.get("family_name").getAsString();
 			String hostedDomain = jobject.get("hd").getAsString();
-			out.print(hostedDomain);
 			if (!hostedDomain.equals(GoogleAuthHelper.HOSTED_DOMAIN)) {
 				request.setAttribute("error", true);
 				RequestDispatcher dispatcher = request
@@ -81,13 +80,14 @@ public class GoogleSign extends HttpServlet {
 			} else {
 				User user = null;
 				boolean isStudent = false;
-				if (email.length() == 22 && Character.isDigit(email.charAt(5))
+				if (email_cred.length() == 7
+						&& Character.isDigit(email.charAt(5))
 						&& Character.isDigit(email.charAt(6)))
 					isStudent = true;
 				if (isStudent)
-					user = new Student(email, firstName, lastName, false);
+					user = new Student(email_cred, firstName, lastName, false);
 				else
-					user = new Lecturer(email, firstName, lastName, false);
+					user = new Lecturer(email_cred, firstName, lastName, false);
 				UserManager userManager = (UserManager) request
 						.getServletContext().getAttribute(
 								UserManager.ATTRIBUTE_NAME);
