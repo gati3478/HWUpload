@@ -61,11 +61,13 @@ public class GoogleSign extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			session.removeAttribute("state");
 
+			// building JSON containing user information
 			String info = helper.getUserInfoJson(request.getParameter("code"));
 			JsonElement jelement = new JsonParser().parse(info);
 			JsonObject jobject = jelement.getAsJsonObject();
 			String id = jobject.get("id").getAsString();
 			String email = jobject.get("email").getAsString();
+			// we don't store whole email, credentials only
 			int atSymbolPos = email
 					.indexOf('@' + GoogleAuthHelper.HOSTED_DOMAIN);
 			String email_cred = email.substring(0, atSymbolPos);
@@ -80,6 +82,7 @@ public class GoogleSign extends HttpServlet {
 			} else {
 				User user = null;
 				boolean isStudent = false;
+				// constructing new user
 				if (email_cred.length() == 7
 						&& Character.isDigit(email.charAt(5))
 						&& Character.isDigit(email.charAt(6)))
@@ -88,6 +91,7 @@ public class GoogleSign extends HttpServlet {
 					user = new Student(email_cred, firstName, lastName, false);
 				else
 					user = new Lecturer(email_cred, firstName, lastName, false);
+				// adding user to the database (if it didn't exist before)
 				UserManager userManager = (UserManager) request
 						.getServletContext().getAttribute(
 								UserManager.ATTRIBUTE_NAME);
@@ -97,6 +101,13 @@ public class GoogleSign extends HttpServlet {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				// saving user in session
+				request.getSession().setAttribute(User.ATTRIBUTE_NAME, user);
+				// redirecting to appropriate page
+				if (user instanceof Student)
+					response.sendRedirect("studentcourses.jsp");
+				else
+					response.sendRedirect("acadyears.jsp");
 				out.print(jobject.toString());
 			}
 		}
