@@ -1,12 +1,13 @@
 <%@page import="hwu.util.auth.GoogleAuthHelper"%>
 <%@page import="hwu.datamodel.users.User"%>
+<%@page import="hwu.datamodel.users.Student"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>{name} Homework Upload</title>
+<title>Homework Manager</title>
 </head>
 <body>
 	<div class="oauthDemo">
@@ -15,11 +16,18 @@
 			 * The GoogleAuthHelper handles all the heavy lifting, and contains all "secrets"
 			 * required for constructing a google login url.
 			 */
+			User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
+			if (user != null) {
+				if (user instanceof Student)
+					response.sendRedirect("studentcourses.jsp");
+				else
+					response.sendRedirect("acadyears.jsp");
+				return;
+			}
 			final GoogleAuthHelper helper = new GoogleAuthHelper();
 
-			if (session.getAttribute(User.ATTRIBUTE_NAME) == null
-					&& (request.getParameter("code") == null || request
-							.getParameter("state") == null)) {
+			if (request.getParameter("code") == null
+					|| request.getParameter("state") == null) {
 				/*
 				 * Initial visit to the page
 				 */
