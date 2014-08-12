@@ -4,19 +4,20 @@ USE hwupload;
 -- Student cabinet
 SELECT courses.name, courses.ID
 	FROM (SELECT * FROM course_students WHERE student_id=1) AS cur_student 
-		LEFT JOIN courses ON course_id
+		LEFT JOIN courses ON course_id=courses.id
 		WHERE courses.start_date <= NOW() AND courses.end_date >= NOW(); 
 
 -- Lecturer cabinet
-SELECT courses.name, courses.start_date, courses.end_date, courses.ID
-	FROM (SELECT * FROM courses_lecturers WHERE lecturer_id = 1) AS cur_lecturer
-		LEFT JOIN courses ON course_id;
+SELECT courses.name, courses.start_date, courses.ID
+	FROM (SELECT * FROM courses_lecturers WHERE lecturer_id = 11) AS cur_lecturer
+		LEFT JOIN courses ON course_id=courses.id
+		ORDER BY courses.start_date;
 		
 
 -- Tutor cabinet
 SELECT courses.name, courses.ID
 	FROM (SELECT * FROM courses_tutors WHERE tutor_id = 1) AS cur_tutor 
-		LEFT JOIN courses ON course_id
+		LEFT JOIN courses ON course_id=courses.id
 		WHERE courses.start_date <= NOW() AND courses.end_date >= NOW();
 
 -- Collect all homework for current lecturer(trivial select from files by homework id)
