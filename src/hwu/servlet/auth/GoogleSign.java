@@ -80,6 +80,8 @@ public class GoogleSign extends HttpServlet {
 						.getRequestDispatcher("index.jsp");
 				dispatcher.forward(request, response);
 			} else {
+				request.getSession().setAttribute("token",
+						helper.getAccessToken());
 				User user = null;
 				boolean isStudent = false;
 				// constructing new user
@@ -108,7 +110,6 @@ public class GoogleSign extends HttpServlet {
 					response.sendRedirect("studentcourses.jsp");
 				else
 					response.sendRedirect("acadyears.jsp");
-				out.print(jobject.toString());
 			}
 		}
 	}
