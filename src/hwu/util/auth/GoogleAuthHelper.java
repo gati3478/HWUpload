@@ -57,7 +57,7 @@ public final class GoogleAuthHelper {
 	// end google authentication constants
 
 	private String stateToken;
-
+	private String accessToken;
 	private final GoogleAuthorizationCodeFlow flow;
 
 	/**
@@ -106,6 +106,7 @@ public final class GoogleAuthHelper {
 	public String getUserInfoJson(final String authCode) throws IOException {
 		final GoogleTokenResponse response = flow.newTokenRequest(authCode)
 				.setRedirectUri(CALLBACK_URI).execute();
+		accessToken = response.getAccessToken();
 		final Credential credential = flow.createAndStoreCredential(response,
 				null);
 		final HttpRequestFactory requestFactory = HTTP_TRANSPORT
@@ -117,6 +118,15 @@ public final class GoogleAuthHelper {
 		final String jsonIdentity = request.execute().parseAsString();
 
 		return jsonIdentity;
+	}
+
+	/**
+	 * Returns access token.
+	 * 
+	 * @return String representing access token
+	 */
+	public String getAccessToken() {
+		return accessToken;
 	}
 
 }
