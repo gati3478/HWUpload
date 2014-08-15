@@ -17,5 +17,6 @@
 </head>
 <body>
 	<h2>Student's Courses:</h2>
+	<a href="SignOut">Sign Out</a>
 </body>
 </html>
