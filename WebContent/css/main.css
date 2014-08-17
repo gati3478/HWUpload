@@ -1,16 +1,21 @@
-@CHARSET "ISO-8859-1";
+@CHARSET "UTF-8";
+
 body {
 	font-family: Sans-Serif;
-	margin: 1em;
 }
 
-.oauthDemo a {
+#main_logo {
 	display: block;
-	border-style: solid;
-	border-color: #bbb #888 #666 #aaa;
-	border-width: 1px 2px 2px 1px;
-	background: #ccc;
-	color: #333;
+	margin: auto;
+	margin-top: 70px;
+}
+
+.oauthbtn a {
+	display: block;
+	margin: auto;
+	margin-top: 70px;
+	border-radius: 8px;
+	background: #FFD03D;
 	line-height: 2;
 	text-align: center;
 	text-decoration: none;
@@ -18,18 +23,10 @@ body {
 	width: 13em;
 }
 
-.oauthDemo pre {
-	background: #ccc;
-}
-
-.oauthDemo a:active {
-	border-color: #666 #aaa #bbb #888;
-	border-width: 2px 1px 1px 2px;
-	color: #000;
-}
-
-.readme {
-	padding: .5em;
-	background-color: #F9AD81;
-	color: #333;
+.login-center {
+	display: block;
+	margin: auto;
+	margin-top: 30px;
+	margin-bottom: -30px;
+	text-align: center;
 }
