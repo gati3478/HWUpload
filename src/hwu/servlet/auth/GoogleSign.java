@@ -7,7 +7,6 @@ import hwu.db.managers.UserManager;
 import hwu.util.auth.GoogleAuthHelper;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -59,29 +58,27 @@ public class GoogleSign extends HttpServlet {
 						session.getAttribute("state"))) {
 			final GoogleAuthHelper helper = (GoogleAuthHelper) getServletContext()
 					.getAttribute(GoogleAuthHelper.ATTRIBUTE_NAME);
-			PrintWriter out = response.getWriter();
 			session.removeAttribute("state");
 
 			// building JSON containing user information
 			String info = helper.getUserInfoJson(request.getParameter("code"));
 			JsonElement jelement = new JsonParser().parse(info);
 			JsonObject jobject = jelement.getAsJsonObject();
-			String id = jobject.get("id").getAsString();
+			// String id = jobject.get("id").getAsString();
 			String email = jobject.get("email").getAsString();
 			// we don't store whole email, credentials only
 			int atSymbolPos = email
 					.indexOf('@' + GoogleAuthHelper.HOSTED_DOMAIN);
-			String email_cred = email.substring(0, atSymbolPos);
-			String firstName = jobject.get("given_name").getAsString();
-			String lastName = jobject.get("family_name").getAsString();
-			String hostedDomain = jobject.get("hd").getAsString();
-			if (!hostedDomain.equals(GoogleAuthHelper.HOSTED_DOMAIN)) {
+			if (atSymbolPos == -1) {
 				request.setAttribute("error", true);
 				RequestDispatcher dispatcher = request
 						.getRequestDispatcher("index.jsp");
 				dispatcher.forward(request, response);
 			} else {
 				User user = null;
+				String email_cred = email.substring(0, atSymbolPos);
+				String firstName = jobject.get("given_name").getAsString();
+				String lastName = jobject.get("family_name").getAsString();
 				boolean isStudent = false;
 				// constructing new user
 				if (email_cred.length() == 7
