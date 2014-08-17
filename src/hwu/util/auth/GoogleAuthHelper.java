@@ -79,7 +79,7 @@ public final class GoogleAuthHelper {
 		StringBuilder authUrlBuilder = new StringBuilder(url
 				.setRedirectUri(CALLBACK_URI).setState(stateToken).build());
 		authUrlBuilder.append("&prompt=select_account");
-		authUrlBuilder.append("&hd=" + HOSTED_DOMAIN);
+		// authUrlBuilder.append("&hd=" + HOSTED_DOMAIN);
 		return authUrlBuilder.toString();
 	}
 
