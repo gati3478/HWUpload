@@ -57,7 +57,8 @@ public class GoogleSign extends HttpServlet {
 				&& request.getParameter("state") != null
 				&& request.getParameter("state").equals(
 						session.getAttribute("state"))) {
-			final GoogleAuthHelper helper = new GoogleAuthHelper();
+			final GoogleAuthHelper helper = (GoogleAuthHelper) getServletContext()
+					.getAttribute(GoogleAuthHelper.ATTRIBUTE_NAME);
 			PrintWriter out = response.getWriter();
 			session.removeAttribute("state");
 
@@ -80,8 +81,6 @@ public class GoogleSign extends HttpServlet {
 						.getRequestDispatcher("index.jsp");
 				dispatcher.forward(request, response);
 			} else {
-				request.getSession().setAttribute("token",
-						helper.getAccessToken());
 				User user = null;
 				boolean isStudent = false;
 				// constructing new user

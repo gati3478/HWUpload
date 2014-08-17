@@ -24,7 +24,8 @@
 					response.sendRedirect("acadyears.jsp");
 				return;
 			}
-			final GoogleAuthHelper helper = new GoogleAuthHelper();
+			final GoogleAuthHelper helper = (GoogleAuthHelper) application
+					.getAttribute(GoogleAuthHelper.ATTRIBUTE_NAME);
 
 			if (request.getParameter("code") == null
 					|| request.getParameter("state") == null) {
