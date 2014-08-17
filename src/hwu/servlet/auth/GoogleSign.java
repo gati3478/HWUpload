@@ -70,7 +70,7 @@ public class GoogleSign extends HttpServlet {
 			int atSymbolPos = email
 					.indexOf('@' + GoogleAuthHelper.HOSTED_DOMAIN);
 			if (atSymbolPos == -1) {
-				request.setAttribute("error", true);
+				request.setAttribute("error", new String());
 				RequestDispatcher dispatcher = request
 						.getRequestDispatcher("index.jsp");
 				dispatcher.forward(request, response);

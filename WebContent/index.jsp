@@ -27,8 +27,12 @@
 			final GoogleAuthHelper helper = (GoogleAuthHelper) application
 					.getAttribute(GoogleAuthHelper.ATTRIBUTE_NAME);
 
+			if (request.getAttribute("error") != null) {
+				request.removeAttribute("error");
+				out.println("Try again with Freeuni E-Mail");
+			}
 			if (request.getParameter("code") == null
-					|| request.getParameter("state") == null) {
+					|| session.getAttribute("state") == null) {
 				/*
 				 * Initial visit to the page
 				 */
