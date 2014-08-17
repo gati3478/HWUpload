@@ -39,22 +39,8 @@ public class SignOut extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		request.getSession().setAttribute(User.ATTRIBUTE_NAME, null);
-		String accessToken = (String) request.getSession()
-				.getAttribute("token");
-		revokeAcess(accessToken);
 		request.getSession().invalidate();
 		response.sendRedirect("index.jsp");
-	}
-
-	private void revokeAcess(String token) {
-		try {
-			HttpClient client = new DefaultHttpClient();
-			HttpPost post = new HttpPost(
-					"https://accounts.google.com/o/oauth2/revoke?token="
-							+ token);
-			org.apache.http.HttpResponse response = client.execute(post);
-		} catch (IOException e) {
-		}
 	}
 
 	/**

@@ -25,6 +25,7 @@ import java.util.Collection;
  * @author Giorgi Petriashvili
  */
 public final class GoogleAuthHelper {
+	public static final String ATTRIBUTE_NAME = "googleauthhelper";
 
 	/**
 	 * Please provide a value for the CLIENT_ID constant before proceeding, set
@@ -57,7 +58,6 @@ public final class GoogleAuthHelper {
 	// end google authentication constants
 
 	private String stateToken;
-	private String accessToken;
 	private final GoogleAuthorizationCodeFlow flow;
 
 	/**
@@ -76,8 +76,11 @@ public final class GoogleAuthHelper {
 	public String buildLoginUrl() {
 		final GoogleAuthorizationCodeRequestUrl url = flow
 				.newAuthorizationUrl();
-		return url.setRedirectUri(CALLBACK_URI).setState(stateToken).build()
-				+ "&hd=" + HOSTED_DOMAIN;
+		StringBuilder authUrlBuilder = new StringBuilder(url
+				.setRedirectUri(CALLBACK_URI).setState(stateToken).build());
+		authUrlBuilder.append("&prompt=select_account");
+		authUrlBuilder.append("&hd=" + HOSTED_DOMAIN);
+		return authUrlBuilder.toString();
 	}
 
 	/**
@@ -106,7 +109,6 @@ public final class GoogleAuthHelper {
 	public String getUserInfoJson(final String authCode) throws IOException {
 		final GoogleTokenResponse response = flow.newTokenRequest(authCode)
 				.setRedirectUri(CALLBACK_URI).execute();
-		accessToken = response.getAccessToken();
 		final Credential credential = flow.createAndStoreCredential(response,
 				null);
 		final HttpRequestFactory requestFactory = HTTP_TRANSPORT
@@ -118,15 +120,6 @@ public final class GoogleAuthHelper {
 		final String jsonIdentity = request.execute().parseAsString();
 
 		return jsonIdentity;
-	}
-
-	/**
-	 * Returns access token.
-	 * 
-	 * @return String representing access token
-	 */
-	public String getAccessToken() {
-		return accessToken;
 	}
 
 }
