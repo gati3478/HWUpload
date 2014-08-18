@@ -4,29 +4,6 @@ body {
 	font-family: Sans-Serif;
 }
 
-#main_logo {
-	display: block;
-	margin: auto;
-	margin-top: 70px;
-}
-
-.oauthbtn a {
-	display: block;
-	margin: auto;
-	margin-top: 70px;
-	border-radius: 8px;
-	background: #FFD03D;
-	line-height: 2;
-	text-align: center;
+a {
 	text-decoration: none;
-	font-weight: 900;
-	width: 13em;
-}
-
-.login-center {
-	display: block;
-	margin: auto;
-	margin-top: 30px;
-	margin-bottom: -30px;
-	text-align: center;
 }

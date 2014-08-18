@@ -6,6 +6,7 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/auth.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Homework Manager</title>
 </head>
