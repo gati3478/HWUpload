@@ -38,6 +38,14 @@ public class Course {
 	}
 
 	/**
+	 * @param id
+	 * @param name
+	 */
+	public Course(String name, int id) {
+		this(id, name, null, null, null);
+	}
+
+	/**
 	 * 
 	 * @return
 	 */
