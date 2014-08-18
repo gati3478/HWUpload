@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="shortcut icon" href="images/favicon.ico" />
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <link rel="stylesheet" type="text/css" href="css/auth.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -27,9 +28,18 @@
 		}
 	%>
 	<%
-		if (request.getAttribute("error") != null) {
-			request.removeAttribute("error");
-			out.println("<p class=\"login-center\">Please, try again with Freeuni E-Mail<p>");
+		if (session.getAttribute("login_error") != null) {
+			out.print("<p class=\"login-center\">");
+			out.print("გთხოვთ სცადოთ თავიდან.");
+			out.print("<p>");
+			out.print("<p class=\"login-center\">");
+			out.print("სისტემაში შესვლა შესაძლებელია მხოლოდ საუნივერსიტეტო <em>(<strong>@freeuni.edu.ge</strong>)</em> e-mail ანგარიშით.");
+			out.print("<p>");
+			session.removeAttribute("login_error");
+		} else {
+			out.print("<p class=\"login-center\">");
+			out.print("სისტემაში შესასვლელად გამოიყენეთ თქვენი საუნივერსიტეტო <em>(<strong>@freeuni.edu.ge</strong>)</em> e-mail ანგარიში.");
+			out.print("<p>");
 		}
 	%>
 	<div class="oauthbtn">

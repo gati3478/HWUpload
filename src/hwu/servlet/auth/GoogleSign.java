@@ -9,7 +9,6 @@ import hwu.util.auth.GoogleAuthHelper;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -70,10 +69,8 @@ public class GoogleSign extends HttpServlet {
 			int atSymbolPos = email
 					.indexOf('@' + GoogleAuthHelper.HOSTED_DOMAIN);
 			if (atSymbolPos == -1) {
-				request.setAttribute("error", new String());
-				RequestDispatcher dispatcher = request
-						.getRequestDispatcher("index.jsp");
-				dispatcher.forward(request, response);
+				request.getSession().setAttribute("login_error", new String());
+				response.sendRedirect("index.jsp");
 			} else {
 				User user = null;
 				String email_cred = email.substring(0, atSymbolPos);
