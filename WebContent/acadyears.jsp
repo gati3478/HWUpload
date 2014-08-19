@@ -30,8 +30,7 @@
 	for(AcadYear year : manager.getCourses((Lecturer)user)) {
 		out.println("<p> " + year.getStartYear() + "/" + year.getEndYear() + " </p>");
 		out.println("<ul>");
-		for(Iterator<Course> courses = year.iterator(); courses.hasNext(); ) {
-			Course course = courses.next();
+		for(Course course: year.getCourses()) {
 			// links to course pages
 			out.println("<li> <a href='somejsp.jsp?id=" + course.getID() + "'> " + 
 				course.getName() + " </a> </li>");

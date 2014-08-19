@@ -27,8 +27,8 @@ public class AcadYear {
 		courses.add(course);
 	}
 
-	public Iterator<Course> iterator() {
-		return courses.iterator();
+	public List<Course> getCourses() {
+		return courses;
 	}
 
 }

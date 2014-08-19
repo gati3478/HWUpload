@@ -30,11 +30,29 @@ public class CourseManager extends Manager {
 	}
 
 	public Course getCourse(int id) {
-		return null;
+		return null;	
 	}
 
 	public List<Course> getCourses(Student student) {
-		return null;
+		List<Course> courses = new ArrayList<Course>();
+		try {
+			Connection con = dataSource.getConnection();
+			String query = "SELECT courses.name, courses.ID "
+					+ "FROM (SELECT * FROM course_students WHERE student_id=?) AS cur_student "
+					+ "LEFT JOIN courses ON course_id=courses.id "
+					+ "WHERE courses.start_date <= NOW() AND courses.end_date >= NOW()";
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setInt(1, student.getID());
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				courses.add(new Course(rs.getString(1), rs.getInt(2)));
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return courses;
 	}
 
 	public List<AcadYear> getCourses(Lecturer lecturer) {
@@ -71,7 +89,25 @@ public class CourseManager extends Manager {
 	}
 
 	public List<Course> getAssignedCourses(User tutor) {
-		return null;
+		List<Course> courses = new ArrayList<Course>();
+		try {
+			Connection con = dataSource.getConnection();
+			String query = "SELECT courses.name, courses.ID "
+					+ "FROM (SELECT * FROM courses_tutors WHERE tutor_id = 1) AS cur_tutor "
+					+ "LEFT JOIN courses ON course_id=courses.id "
+					+ "WHERE courses.start_date <= NOW() AND courses.end_date >= NOW()";
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setInt(1, tutor.getID());
+			ResultSet rs = statement.executeQuery();
+			while (rs.next()) {
+				courses.add(new Course(rs.getString(1), rs.getInt(2)));
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return courses;
 	}
 
 }

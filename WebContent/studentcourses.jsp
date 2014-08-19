@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@page import="hwu.datamodel.users.User"%>
 <%@page import="hwu.datamodel.users.Student"%>
+<%@page import="hwu.datamodel.Course"%>
+<%@page import="hwu.db.managers.CourseManager"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +12,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%
 	User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
+	CourseManager manager = (CourseManager) request.getServletContext().
+		getAttribute(CourseManager.ATTRIBUTE_NAME);
 	if (user == null || !(user instanceof Student)) {
 		response.sendRedirect("index.jsp");
 		return;
@@ -19,6 +23,13 @@
 </head>
 <body>
 	<h2>ჩემი (სტუდენტის) კურსები:</h2>
+<% 	
+	for(Course course: manager.getCourses((Student)user)) {
+		// links to course pages
+		out.println("<li> <a href='somejsp.jsp?id=" + course.getID() + "'> " + 
+			course.getName() + " </a> </li>");
+	}
+%>
 	<a href="SignOut">სისტემიდან გასვლა (Sign Out)</a>
 </body>
 </html>
