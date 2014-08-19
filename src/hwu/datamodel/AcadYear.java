@@ -5,16 +5,22 @@ import java.util.Iterator;
 import java.util.List;
 
 public class AcadYear {
-	private int year;
+	private int fromYear;
+	private int toYear;
 	private List<Course> courses;
 
-	public AcadYear(int year) {
-		this.year = year;
+	public AcadYear(int fromYear, int toYear) {
+		this.fromYear = fromYear;
+		this.toYear = toYear;
 		courses = new ArrayList<Course>();
 	}
 
-	public int getYear() {
-		return year;
+	public int getStartYear() {
+		return fromYear;
+	}
+
+	public int getEndYear() {
+		return toYear;
 	}
 
 	public void addCourse(Course course) {

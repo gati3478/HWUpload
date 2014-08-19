@@ -41,16 +41,17 @@ public class CourseManager extends Manager {
 		List<AcadYear> years = new ArrayList<AcadYear>();
 		try {
 			Connection con = dataSource.getConnection();
-			String query = "SELECT courses.name, courses.start_date, courses.ID " + 
-					"FROM (SELECT * FROM courses_lecturers WHERE lecturer_id = ?) " + 
-					"AS cur_lecturer LEFT JOIN courses ON course_id=courses.id " + 
-					"ORDER BY courses.start_date";
+			String query = "SELECT courses.name, courses.start_date, courses.ID "
+					+ "FROM (SELECT * FROM courses_lecturers WHERE lecturer_id = ?) "
+					+ "AS cur_lecturer LEFT JOIN courses ON course_id=courses.id "
+					+ "ORDER BY courses.start_date";
 			PreparedStatement statement = con.prepareStatement(query);
 			statement.setInt(1, lecturer.getID());
 			ResultSet rs = statement.executeQuery();
-			while(rs.next()){
-				addCourseToYear(years, new Course(rs.getString(1), rs.getInt(3)), 
-						rs.getDate(2).getYear() + 1900);
+			while (rs.next()) {
+				addCourseToYear(years,
+						new Course(rs.getString(1), rs.getInt(3)), rs
+								.getDate(2).getYear() + 1900);
 			}
 			con.close();
 		} catch (SQLException e) {
@@ -60,13 +61,15 @@ public class CourseManager extends Manager {
 		return years.iterator();
 	}
 
-	// courses are passed to addCourseToYear ordered ascending by 'year' parameter
+	// courses are passed to addCourseToYear ordered ascending by 'year'
+	// parameter
 	private void addCourseToYear(List<AcadYear> years, Course course, int year) {
-		if(years.isEmpty() || years.get(years.size()-1).getYear() < year)
-			years.add(new AcadYear(year));
-		years.get(years.size()-1).addCourse(course);
+		if (years.isEmpty()
+				|| years.get(years.size() - 1).getStartYear() < year)
+			years.add(new AcadYear(year, year + 1));
+		years.get(years.size() - 1).addCourse(course);
 	}
-	
+
 	public List<Course> getAssignedCourses(User tutor) {
 		return null;
 	}
