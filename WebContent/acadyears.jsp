@@ -27,9 +27,8 @@
 	}
 
 	
-	for(Iterator<AcadYear> it = manager.getCourses((Lecturer)user); it.hasNext(); ) {
-		AcadYear year = it.next();
-		out.println("<p> " + year.getYear() + " </p>");
+	for(AcadYear year : manager.getCourses((Lecturer)user)) {
+		out.println("<p> " + year.getStartYear() + "/" + year.getEndYear() + " </p>");
 		out.println("<ul>");
 		for(Iterator<Course> courses = year.iterator(); courses.hasNext(); ) {
 			Course course = courses.next();

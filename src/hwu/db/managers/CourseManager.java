@@ -37,7 +37,7 @@ public class CourseManager extends Manager {
 		return null;
 	}
 
-	public Iterator<AcadYear> getCourses(Lecturer lecturer) {
+	public List<AcadYear> getCourses(Lecturer lecturer) {
 		List<AcadYear> years = new ArrayList<AcadYear>();
 		try {
 			Connection con = dataSource.getConnection();
@@ -58,7 +58,7 @@ public class CourseManager extends Manager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return years.iterator();
+		return years;
 	}
 
 	// courses are passed to addCourseToYear ordered ascending by 'year'
