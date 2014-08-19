@@ -1,23 +1,56 @@
 package hwu.datamodel;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 public class Homework {
-	private int id;
+	private Integer id;
 	private String name;
 	private String description;
 	private int number;
 	private Timestamp deadline;
 	private boolean isActive;
 	private boolean latedaysAllowed;
-	private List<HomeworkForm> form;
+
+	/**
+	 * 
+	 * @param id
+	 * @param name
+	 * @param description
+	 * @param number
+	 * @param deadline
+	 * @param isActive
+	 * @param latedaysAllowed
+	 */
+	public Homework(Integer id, String name, String description, int number,
+			Timestamp deadline, boolean isActive, boolean latedaysAllowed) {
+		this.id = id;
+		this.description = description;
+		this.number = number;
+		this.deadline = deadline;
+		this.isActive = isActive;
+		this.latedaysAllowed = latedaysAllowed;
+	}
+
+	/**
+	 * 
+	 * @param name
+	 * @param description
+	 * @param number
+	 * @param deadline
+	 * @param isActive
+	 * @param latedaysAllowed
+	 */
+	public Homework(String name, String description, int number,
+			Timestamp deadline, boolean isActive, boolean latedaysAllowed) {
+		this(null, name, description, number, deadline, isActive,
+				latedaysAllowed);
+	}
 
 	/**
 	 * 
 	 * @return
 	 */
-	public int getID() {
+	public Integer getID() {
 		return id;
 	}
 
@@ -69,18 +102,22 @@ public class Homework {
 		return latedaysAllowed;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public List<HomeworkForm> getHomeworkForm() {
-		return form;
-	}
-
-	private class HomeworkForm {
+	public class HomeworkForm {
 		private String regex;
-		private int maxFilesize;
+		private int maxFileSize;
 		private String fileExt;
+
+		/**
+		 * 
+		 * @param regex
+		 * @param maxFileSize
+		 * @param fileExt
+		 */
+		public HomeworkForm(String regex, int maxFileSize, String fileExt) {
+			this.regex = regex;
+			this.maxFileSize = maxFileSize;
+			this.fileExt = fileExt;
+		}
 
 		/**
 		 * 
@@ -94,8 +131,16 @@ public class Homework {
 		 * 
 		 * @return
 		 */
-		public int getMaxFilesize() {
-			return maxFilesize;
+		public int getMaxFileSize() {
+			return maxFileSize;
+		}
+
+		/**
+		 * 
+		 * @return
+		 */
+		public String getFileExtension() {
+			return fileExt;
 		}
 
 	}
