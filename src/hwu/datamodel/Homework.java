@@ -80,6 +80,7 @@ public class Homework {
 	private class HomeworkForm {
 		private String regex;
 		private int maxFilesize;
+		private String fileExt;
 
 		/**
 		 * 
