@@ -38,7 +38,7 @@ CREATE TABLE homework_forms (
 	hw_id INT,
 	regex NVARCHAR(128),
 	max_filesize INT DEFAULT 12, -- in MBs
-	file_extension VARCHAR(8),
+	file_extension VARCHAR(32),
 	FOREIGN KEY (hw_id) REFERENCES homework(id) ON DELETE CASCADE
 );
 
