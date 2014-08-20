@@ -7,3 +7,27 @@ body {
 a {
 	text-decoration: none;
 }
+
+.content_wrapper {
+	margin-top: 12px;
+	margin-left: 34px;
+	margin-right: 34px;
+	margin-left: 34px;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
+}
+
+.topright {
+	margin-left: 8px;
+}
+
+.topright:hover {
+	background-color: #ebe7bb;
+	border-radius: 12px;
+}

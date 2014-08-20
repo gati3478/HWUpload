@@ -22,16 +22,26 @@
 <title>მიმდინარე კურსები</title>
 </head>
 <body>
-	<h2>ჩემი (სტუდენტის) კურსები:</h2>
-	<%
-		out.println("<ul>");
-		for (Course course : manager.getCourses((Student) user)) {
-			// links to course pages
-			out.println("<li><a href='course.jsp?id=" + course.getID()
-					+ "'>" + course.getName() + "</a></li>");
-		}
-		out.println("</ul>");
-	%>
-	<a href="SignOut">სისტემიდან გასვლა (Sign Out)</a>
+	<div class="content_wrapper">
+		<div class="left">
+			<h2>მიმდინარე კურსები:</h2>
+			<%
+				out.println("<ul>");
+				for (Course course : manager.getCourses((Student) user)) {
+					// links to course pages
+					out.println("<li><a href='course.jsp?id=" + course.getID()
+							+ "'>" + course.getName() + "</a></li>");
+				}
+				out.println("</ul>");
+			%>
+		</div>
+		<div class="right">
+			<%
+				if (user.isTutor())
+					out.println("<a class=\"topright\" href=\"tutor.jsp\">სატუტორო კურსები</a>");
+			%>
+			<a class="topright" href="SignOut">სისტემიდან გასვლა</a>
+		</div>
+	</div>
 </body>
 </html>
