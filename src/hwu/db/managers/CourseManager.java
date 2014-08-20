@@ -125,15 +125,7 @@ public class CourseManager extends Manager {
 		}
 		return courses;
 	}
-/*
- * id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	name NVARCHAR(128) NOT NULL,
-	description TEXT,
-	start_date DATE,
-	end_date DATE,
-	latedays_num INT DEFAULT 0,
-	latedays_len INT
- */
+
 	public void addCourseToDB(Course course) {
 		List<String> columnNames = new ArrayList<String>();
 		columnNames.add("name");
@@ -152,4 +144,7 @@ public class CourseManager extends Manager {
 		executeInsert("courses", columnNames, values);
 	}
 
+	public void enroll(List<Student> students, Course course) {
+		
+	}
 }
