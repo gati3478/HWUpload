@@ -150,30 +150,6 @@ public class HomeworkManager extends Manager {
 	 * 
 	 * @param homework
 	 */
-	public void disallowLatedays(Homework homework) {
-		changeLatedaysState(homework, true);
-	}
-
-	/**
-	 * 
-	 * @param homework
-	 */
-	public void allowLatedays(Homework homework) {
-		changeLatedaysState(homework, false);
-	}
-
-	/*
-	 * 
-	 */
-	private void changeLatedaysState(Homework homework, boolean state) {
-		executeSimpleUpdate("homework", "forbid_latedays", "" + state, "id", ""
-				+ homework.getID());
-	}
-
-	/**
-	 * 
-	 * @param homework
-	 */
 	public void removeHomework(Homework homework) {
 		executeSimpleDelete("homework", "id", homework.getID().toString());
 	}
@@ -380,59 +356,6 @@ public class HomeworkManager extends Manager {
 		}
 		con.close();
 		return result;
-	}
-
-	/**
-	 * 
-	 * @param hw
-	 * @param student
-	 * @throws SQLException
-	 */
-	public void useLateDays(Homework hw, Student student) throws SQLException {
-		int lateDaysTaken = usedLateDays(hw, student);
-		// zero used latedays means that corresponding row doesn't exist
-		if (lateDaysTaken == 0) {
-			// we create row so its 'latedays_taken' field can be increased
-			List<String> values = new ArrayList<String>();
-			values.add("" + student.getID());
-			values.add("" + hw.getID());
-			values.add("" + 0);
-			executeInsert("latedays_history", values);
-		}
-		// executing actual increment
-		Connection con = dataSource.getConnection();
-		StringBuilder qb = new StringBuilder("UPDATE latedays_history ");
-		qb.append("SET latedays_taken = ? ");
-		qb.append("WHERE hw_id = ? AND student_id = ?;");
-		PreparedStatement stm = con.prepareStatement(qb.toString());
-		stm.setInt(1, lateDaysTaken + 1);
-		stm.setInt(2, hw.getID());
-		stm.setInt(3, student.getID());
-		stm.executeUpdate();
-		con.close();
-	}
-
-	/**
-	 * 
-	 * @param hw
-	 * @param student
-	 * @return
-	 * @throws SQLException
-	 */
-	public int usedLateDays(Homework hw, Student student) throws SQLException {
-		int lateDaysTaken = 0;
-		Connection con = dataSource.getConnection();
-		StringBuilder qb = new StringBuilder("SELECT latedays_taken FROM ");
-		qb.append("latedays_history WHERE hw_id = ? AND student_id = ?;");
-		PreparedStatement stm = con.prepareStatement(qb.toString());
-		stm.setInt(1, hw.getID());
-		stm.setInt(2, student.getID());
-		ResultSet rs = stm.executeQuery();
-		// parsing data if applicable
-		if (rs.next())
-			lateDaysTaken = rs.getInt("latedays_taken");
-		con.close();
-		return lateDaysTaken;
 	}
 
 }

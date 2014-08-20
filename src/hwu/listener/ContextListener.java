@@ -3,6 +3,7 @@ package hwu.listener;
 import hwu.db.DBInfo;
 import hwu.db.managers.CourseManager;
 import hwu.db.managers.HomeworkManager;
+import hwu.db.managers.LateDaysManager;
 import hwu.db.managers.UserManager;
 import hwu.util.auth.GoogleAuthHelper;
 
@@ -54,6 +55,7 @@ public class ContextListener implements ServletContextListener {
 			UserManager userManager = new UserManager(dataSource);
 			HomeworkManager hwManager = new HomeworkManager(dataSource);
 			CourseManager courseManager = new CourseManager(dataSource);
+			LateDaysManager latedaysManager = new LateDaysManager(dataSource);
 			GoogleAuthHelper oauth2helper = new GoogleAuthHelper();
 			ServletContext servletContext = arg0.getServletContext();
 			servletContext.setAttribute("DataSource", dataSource);
@@ -63,6 +65,8 @@ public class ContextListener implements ServletContextListener {
 					courseManager);
 			servletContext.setAttribute(HomeworkManager.ATTRIBUTE_NAME,
 					hwManager);
+			servletContext.setAttribute(LateDaysManager.ATTRIBUTE_NAME,
+					latedaysManager);
 			servletContext.setAttribute(GoogleAuthHelper.ATTRIBUTE_NAME,
 					oauth2helper);
 		} catch (NamingException e) {
