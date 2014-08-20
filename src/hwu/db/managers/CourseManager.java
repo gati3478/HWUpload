@@ -32,13 +32,14 @@ public class CourseManager extends Manager {
 		Course course = null;
 		try {
 			Connection con = dataSource.getConnection();
-			String query = "SELECT * FROM courses WHERE courses.id="+id;
+			String query = "SELECT * FROM courses WHERE courses.id=" + id;
 			PreparedStatement statement = con.prepareStatement(query);
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
-				course = new Course(id, rs.getString("name"), rs.getString("description"),
-						rs.getDate("start_date"), rs.getDate("end_date"), 
-						rs.getInt("latedays_num"), rs.getInt("latedays_len"));
+				course = new Course(id, rs.getString("name"),
+						rs.getString("description"), rs.getDate("start_date"),
+						rs.getDate("end_date"), rs.getInt("latedays_num"),
+						rs.getInt("latedays_len"));
 			}
 			con.close();
 		} catch (SQLException e) {
@@ -125,15 +126,12 @@ public class CourseManager extends Manager {
 		}
 		return courses;
 	}
-/*
- * id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	name NVARCHAR(128) NOT NULL,
-	description TEXT,
-	start_date DATE,
-	end_date DATE,
-	latedays_num INT DEFAULT 0,
-	latedays_len INT
- */
+
+	/*
+	 * id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, name NVARCHAR(128) NOT NULL,
+	 * description TEXT, start_date DATE, end_date DATE, latedays_num INT
+	 * DEFAULT 0, latedays_len INT
+	 */
 	public void addCourseToDB(Course course) {
 		List<String> columnNames = new ArrayList<String>();
 		columnNames.add("name");
