@@ -82,4 +82,20 @@ public class UserManager extends Manager {
 		return user;
 	}
 
+	/**
+	 * 
+	 * @param user
+	 */
+	public void makeTutor(User user) {
+		executeSimpleUpdate("users", "tutor", "true", "id", "" + user.getID());
+	}
+
+	/**
+	 * 
+	 * @param user
+	 */
+	public void revokeTutor(User user) {
+		executeSimpleUpdate("users", "tutor", "false", "id", "" + user.getID());
+	}
+
 }

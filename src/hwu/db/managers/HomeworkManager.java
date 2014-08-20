@@ -11,10 +11,6 @@ import java.util.List;
 import hwu.datamodel.Course;
 import hwu.datamodel.Homework;
 import hwu.datamodel.HomeworkForm;
-import hwu.datamodel.users.Lecturer;
-import hwu.datamodel.users.Student;
-import hwu.datamodel.users.User;
-
 import javax.sql.DataSource;
 
 public class HomeworkManager extends Manager {
@@ -39,7 +35,7 @@ public class HomeworkManager extends Manager {
 	public Homework getHomework(int id) throws SQLException {
 		Homework result = null;
 		Connection con = dataSource.getConnection();
-		String query = "SELECT * FROM homework WHERE id = ?";
+		String query = "SELECT * FROM homework WHERE id = ?;";
 		PreparedStatement st = con.prepareStatement(query);
 		st.setInt(1, id);
 		ResultSet rs = st.executeQuery();
@@ -184,7 +180,7 @@ public class HomeworkManager extends Manager {
 			throws SQLException {
 		List<HomeworkForm> forms = new ArrayList<HomeworkForm>();
 		Connection con = dataSource.getConnection();
-		String query = "SELECT * FROM homework_forms WHERE hw_id = ?";
+		String query = "SELECT * FROM homework_forms WHERE hw_id = ?;";
 		PreparedStatement st = con.prepareStatement(query);
 		st.setInt(1, homework.getID());
 		ResultSet rs = st.executeQuery();
@@ -262,47 +258,31 @@ public class HomeworkManager extends Manager {
 
 	/**
 	 * 
-	 * @param user
 	 * @param course
 	 * @return
+	 * @throws SQLException
 	 */
-	public List<Homework> getHomework(User user, Course course) {
-		if (user instanceof Student)
-			return getStudentHomework((Student) user, course);
-		else if (user instanceof Lecturer)
-			return getLecturerHomework((Lecturer) user, course);
-		else
-			return null;
-	}
-
-	/**
-	 * 
-	 * @param student
-	 * @param course
-	 * @return
-	 */
-	public List<Homework> getStudentHomework(Student student, Course course) {
-		return null;
-	}
-
-	/**
-	 * 
-	 * @param lecturer
-	 * @param course
-	 * @return
-	 */
-	public List<Homework> getLecturerHomework(Lecturer lecturer, Course course) {
-		return null;
-	}
-
-	/**
-	 * 
-	 * @param tutor
-	 * @param course
-	 * @return
-	 */
-	public List<Homework> getAssignedHomework(User tutor, Course course) {
-		return null;
+	public List<Homework> getHomework(Course course) throws SQLException {
+		List<Homework> result = new ArrayList<Homework>();
+		Connection con = dataSource.getConnection();
+		String query = "SELECT * FROM homework WHERE course_id = ?;";
+		PreparedStatement statement = con.prepareStatement(query);
+		statement.setInt(1, course.getID());
+		ResultSet rs = statement.executeQuery();
+		while (rs.next()) {
+			Integer id = rs.getInt("id");
+			String name = rs.getString("name");
+			String description = rs.getString("description");
+			int number = rs.getInt("number");
+			Timestamp deadline = rs.getTimestamp("deadline");
+			boolean active = rs.getBoolean("active");
+			boolean latedaysDisabled = rs.getBoolean("forbid_latedays");
+			Homework hw = new Homework(id, name, description, number, deadline,
+					active, latedaysDisabled);
+			result.add(hw);
+		}
+		con.close();
+		return result;
 	}
 
 }
