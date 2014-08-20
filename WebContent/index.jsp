@@ -21,7 +21,7 @@
 		User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
 		if (user != null) {
 			if (user instanceof Student)
-				response.sendRedirect("studentcourses.jsp");
+				response.sendRedirect("courses.jsp");
 			else
 				response.sendRedirect("acadyears.jsp");
 			return;
