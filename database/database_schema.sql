@@ -32,9 +32,11 @@ CREATE TABLE homework (
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 CREATE TABLE homework_forms (
+	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	hw_id INT,
 	regex NVARCHAR(128),
 	max_filesize INT DEFAULT 12, -- in MBs
+	file_extension VARCHAR(8),
 	FOREIGN KEY (hw_id) REFERENCES homework(id) ON DELETE CASCADE
 );
 
