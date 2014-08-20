@@ -23,6 +23,9 @@ Description: <br>
   Month: <input type="text" maxlength="2" size="2" name="emonth"> 
   Year: <input type="text" maxlength="4" size="4" name="eyear">
 </fieldset>
+<input type="checkbox" name="late_days" value="1"> Allow late days <br>
+Enter number of late days here: <input type="text" name="late_day_num" size="2"> <br>
+Enter length of late days here: <input type="text" name="late_day_len" size="2"> <br>
 <input class="button" type="submit" value="Continue to enrollment">
 </form>
 </body>

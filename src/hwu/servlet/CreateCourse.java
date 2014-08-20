@@ -23,13 +23,13 @@ public class CreateCourse extends HttpServlet {
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User user = (User) request.getSession().getAttribute(User.ATTRIBUTE_NAME);
+//		User user = (User) request.getSession().getAttribute(User.ATTRIBUTE_NAME);
 		CourseManager manager = (CourseManager) request.getServletContext().
 				getAttribute(CourseManager.ATTRIBUTE_NAME);
-		if (user == null || !(user instanceof Lecturer)) {
-			response.sendRedirect("index.jsp");
-			return;
-		}
+//		if (user == null || !(user instanceof Lecturer)) {
+//			response.sendRedirect("index.jsp");
+//			return;
+//		}
 		
 		String name = request.getParameter("name");
 		String description = request.getParameter("descr");
@@ -39,8 +39,23 @@ public class CreateCourse extends HttpServlet {
 			response.sendRedirect("createcourse.jsp");
 			return;
 		}
+	
+		int lateDaysNum = -1;
+		int lateDaysLen = -1;
+		boolean forbidLast = false;
+		// check for late days parameters
+		if(request.getParameter("late_days") != null) {
+			if (request.getParameter("late_day_num") == null || request.getParameter("late_day_len") == null) {
+				response.sendRedirect("index.jsp");
+				return;
+			}
+			lateDaysNum = Integer.parseInt(request.getParameter("late_day_num"));
+			lateDaysLen = Integer.parseInt(request.getParameter("late_day_len"));
+			forbidLast = request.getParameter("last_day") != null;
+		}
 		
-	// manager.addCourseToDB(new Course(name, description, startDate, endDate));	
+	
+		manager.addCourseToDB(new Course(name, description, startDate, endDate, lateDaysLen, lateDaysNum, forbidLast));	
 	}
 	
 	private Date constructDate(String day, String month, String year) {

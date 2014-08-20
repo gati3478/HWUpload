@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import hwu.datamodel.AcadYear;
@@ -55,6 +54,7 @@ public class CourseManager extends Manager {
 		return courses;
 	}
 
+	@SuppressWarnings("deprecation")
 	public List<AcadYear> getCourses(Lecturer lecturer) {
 		List<AcadYear> years = new ArrayList<AcadYear>();
 		try {
@@ -108,6 +108,32 @@ public class CourseManager extends Manager {
 			e.printStackTrace();
 		}
 		return courses;
+	}
+/*
+ * id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	name NVARCHAR(128) NOT NULL,
+	description TEXT,
+	start_date DATE,
+	end_date DATE,
+	latedays_num INT DEFAULT 0,
+	latedays_len INT
+ */
+	public void addCourseToDB(Course course) {
+		List<String> columnNames = new ArrayList<String>();
+		columnNames.add("name");
+		columnNames.add("description");
+		columnNames.add("start_date");
+		columnNames.add("end_date");
+		columnNames.add("latedays_num");
+		columnNames.add("latedays_len");
+		List<String> values = new ArrayList<String>();
+		values.add(course.getName());
+		values.add(course.getDescription());
+		values.add(course.getStartDate().toString());
+		values.add(course.getEndDate().toString());
+		values.add("" + course.getLateDaysNumber());
+		values.add("" + course.getLateDaysLength());
+		executeInsert("courses", columnNames, values);
 	}
 
 }
