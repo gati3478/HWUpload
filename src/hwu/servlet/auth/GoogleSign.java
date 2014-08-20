@@ -92,6 +92,7 @@ public class GoogleSign extends HttpServlet {
 								UserManager.ATTRIBUTE_NAME);
 				try {
 					userManager.tryAddUser(user);
+					user = userManager.getUser(email_cred);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -100,7 +101,7 @@ public class GoogleSign extends HttpServlet {
 				request.getSession().setAttribute(User.ATTRIBUTE_NAME, user);
 				// redirecting to appropriate page
 				if (user instanceof Student)
-					response.sendRedirect("studentcourses.jsp");
+					response.sendRedirect("courses.jsp");
 				else
 					response.sendRedirect("acadyears.jsp");
 			}
