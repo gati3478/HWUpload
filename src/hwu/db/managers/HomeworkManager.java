@@ -76,8 +76,14 @@ public class HomeworkManager extends Manager {
 		values.add("" + homework.getNumber());
 		values.add("" + course.getID());
 		values.add(homework.getDeadline().toString());
-		values.add("" + homework.isActive());
-		values.add("" + homework.latedaysDisabled());
+		int state = 1;
+		if (!homework.isActive())
+			state = 0;
+		values.add("" + state);
+		int lateDaysDis = 1;
+		if (!homework.latedaysDisabled())
+			lateDaysDis = 0;
+		values.add("" + lateDaysDis);
 		executeInsert("homework", columnNames, values);
 	}
 
@@ -107,8 +113,8 @@ public class HomeworkManager extends Manager {
 	 * @param homework
 	 * @param newNumber
 	 */
-	public void changeHomeworkNumber(Homework homework, String newNumber) {
-		executeSimpleUpdate("homework", "number", newNumber, "id", ""
+	public void changeHomeworkNumber(Homework homework, int newNumber) {
+		executeSimpleUpdate("homework", "number", "" + newNumber, "id", ""
 				+ homework.getID());
 	}
 
@@ -142,7 +148,10 @@ public class HomeworkManager extends Manager {
 	 * 
 	 */
 	private void changeHomeworkState(Homework homework, boolean state) {
-		executeSimpleUpdate("homework", "active", "" + state, "id", ""
+		int hwState = 0;
+		if (state)
+			hwState = 1;
+		executeSimpleUpdate("homework", "active", "" + hwState, "id", ""
 				+ homework.getID());
 	}
 
@@ -232,11 +241,10 @@ public class HomeworkManager extends Manager {
 
 	/**
 	 * 
-	 * @param homework
 	 * @param form
 	 * @throws SQLException
 	 */
-	public void removeHomeworkForm(Homework homework, HomeworkForm form) {
+	public void removeHomeworkForm(HomeworkForm form) {
 		executeSimpleDelete("homework_forms", "id", "" + form.getID());
 	}
 
@@ -249,7 +257,7 @@ public class HomeworkManager extends Manager {
 	public List<Homework> getHomework(Course course) throws SQLException {
 		List<Homework> result = new ArrayList<Homework>();
 		Connection con = dataSource.getConnection();
-		String query = "SELECT * FROM homework WHERE course_id = ?;";
+		String query = "SELECT * FROM homework WHERE course_id = ? ORDER BY number ASC;";
 		PreparedStatement statement = con.prepareStatement(query);
 		statement.setInt(1, course.getID());
 		ResultSet rs = statement.executeQuery();
