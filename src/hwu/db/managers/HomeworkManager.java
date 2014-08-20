@@ -11,6 +11,8 @@ import java.util.List;
 import hwu.datamodel.Course;
 import hwu.datamodel.Homework;
 import hwu.datamodel.HomeworkForm;
+import hwu.datamodel.users.Student;
+
 import javax.sql.DataSource;
 
 public class HomeworkManager extends Manager {
@@ -136,6 +138,9 @@ public class HomeworkManager extends Manager {
 		changeHomeworkState(homework, false);
 	}
 
+	/*
+	 * 
+	 */
 	private void changeHomeworkState(Homework homework, boolean state) {
 		executeSimpleUpdate("homework", "active", "" + state, "id", ""
 				+ homework.getID());
@@ -157,6 +162,9 @@ public class HomeworkManager extends Manager {
 		changeLatedaysState(homework, false);
 	}
 
+	/*
+	 * 
+	 */
 	private void changeLatedaysState(Homework homework, boolean state) {
 		executeSimpleUpdate("homework", "forbid_latedays", "" + state, "id", ""
 				+ homework.getID());
@@ -280,6 +288,73 @@ public class HomeworkManager extends Manager {
 			Homework hw = new Homework(id, name, description, number, deadline,
 					active, latedaysDisabled);
 			result.add(hw);
+		}
+		con.close();
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param hw
+	 * @param student
+	 * @param filename
+	 * @param date
+	 */
+	public void addHomeworkFilename(Homework hw, Student student,
+			String filename, Timestamp date) {
+		List<String> columnNames = new ArrayList<String>();
+		columnNames.add("filename");
+		columnNames.add("upload_time");
+		columnNames.add("student_id");
+		columnNames.add("hw_id");
+		List<String> values = new ArrayList<String>();
+		values.add(filename);
+		values.add(date.toString());
+		values.add("" + student.getID());
+		values.add("" + hw.getID());
+		executeInsert("files", columnNames, values);
+	}
+
+	/**
+	 * 
+	 * @param hw
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<String> getHomeworkFilenames(Homework hw) throws SQLException {
+		List<String> result = new ArrayList<String>();
+		Connection con = dataSource.getConnection();
+		String query = "SELECT * FROM files WHERE hw_id = ?;";
+		PreparedStatement stm = con.prepareStatement(query);
+		stm.setInt(1, hw.getID());
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			String filename = rs.getString("filename");
+			result.add(filename);
+		}
+		con.close();
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param hw
+	 * @param student
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<String> getStudentHomeworkFilenames(Homework hw, Student student)
+			throws SQLException {
+		List<String> result = new ArrayList<String>();
+		Connection con = dataSource.getConnection();
+		String query = "SELECT * FROM files WHERE hw_id = ? AND student_id = ?;";
+		PreparedStatement stm = con.prepareStatement(query);
+		stm.setInt(1, hw.getID());
+		stm.setInt(2, student.getID());
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			String filename = rs.getString("filename");
+			result.add(filename);
 		}
 		con.close();
 		return result;
