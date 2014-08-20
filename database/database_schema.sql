@@ -43,7 +43,7 @@ CREATE TABLE homework_forms (
 CREATE TABLE files (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	filename NVARCHAR(256) NOT NULL,
-	upload_time DATETIME DEFAULT NOW(),
+	submit_time DATETIME DEFAULT NOW(),
 	student_id INT,
 	hw_id INT,
 	FOREIGN KEY (student_id) REFERENCES users(id) ON DELETE CASCADE,
