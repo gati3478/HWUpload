@@ -57,7 +57,7 @@ public class LateDaysManager extends Manager {
 	 * @throws SQLException
 	 */
 	public void useLateDay(Homework hw, Student student) throws SQLException {
-		int lateDaysTaken = usedLateDays(hw, student);
+		int lateDaysTaken = usedLateDaysForHomework(hw, student);
 		// zero used latedays means that corresponding row doesn't exist
 		if (lateDaysTaken == 0) {
 			// we create row so its 'latedays_taken' field can be increased
@@ -87,7 +87,8 @@ public class LateDaysManager extends Manager {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int usedLateDays(Homework hw, Student student) throws SQLException {
+	public int usedLateDaysForHomework(Homework hw, Student student)
+			throws SQLException {
 		int lateDaysTaken = 0;
 		Connection con = dataSource.getConnection();
 		StringBuilder qb = new StringBuilder("SELECT latedays_taken FROM ");
@@ -111,31 +112,55 @@ public class LateDaysManager extends Manager {
 	 */
 	public int usedLateDays(Course course, Student student) throws SQLException {
 		int lateDaysTaken = 0;
-//		Connection con = dataSource.getConnection();
-//		StringBuilder qb = new StringBuilder("SELECT latedays_taken FROM ");
-//		qb.append("latedays_history WHERE student_id = ?;");
-//		PreparedStatement stm = con.prepareStatement(qb.toString());
-//		stm.setInt(1, student.getID());
-//		ResultSet rs = stm.executeQuery();
-//		// parsing data if applicable
-//		while (rs.next())
-//			lateDaysTaken += rs.getInt("latedays_taken");
-//		con.close();
 		return lateDaysTaken;
 	}
 
+	/**
+	 * 
+	 * @param course
+	 * @param student
+	 * @return
+	 */
+	public int lateDaysRemaining(Course course, Student student) {
+		return 0;
+	}
+
+	/**
+	 * 
+	 * @param course
+	 * @return
+	 */
 	public int getLateDaysNum(Course course) {
 		return 0;
 	}
 
+	/**
+	 * 
+	 * @param course
+	 * @param newNumber
+	 */
 	public void changeLateDaysNum(Course course, int newNumber) {
+		executeSimpleUpdate("courses", "latedays_num", "" + newNumber, "id", ""
+				+ course.getID());
 	}
 
+	/**
+	 * 
+	 * @param course
+	 * @return
+	 */
 	public int getLateDaysLength(Course course) {
 		return 0;
 	}
 
+	/**
+	 * 
+	 * @param course
+	 * @param newLength
+	 */
 	public void changeLateDaysLength(Course course, int newLength) {
+		executeSimpleUpdate("courses", "latedays_len", "" + newLength, "id", ""
+				+ course.getID());
 	}
 
 }
