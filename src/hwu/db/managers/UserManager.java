@@ -87,7 +87,7 @@ public class UserManager extends Manager {
 	 * @param user
 	 */
 	public void makeTutor(User user) {
-		executeSimpleUpdate("users", "tutor", "true", "id", "" + user.getID());
+		executeSimpleUpdate("users", "tutor", "1", "id", "" + user.getID());
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class UserManager extends Manager {
 	 * @param user
 	 */
 	public void revokeTutor(User user) {
-		executeSimpleUpdate("users", "tutor", "false", "id", "" + user.getID());
+		executeSimpleUpdate("users", "tutor", "0", "id", "" + user.getID());
 	}
 
 }
