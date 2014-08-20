@@ -16,7 +16,9 @@ CREATE TABLE courses (
 	name NVARCHAR(128) NOT NULL,
 	description TEXT,
 	start_date DATE,
-	end_date DATE
+	end_date DATE,
+	latedays_num INT DEFAULT 0,
+	latedays_len INT
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
 CREATE TABLE homework (
@@ -66,8 +68,6 @@ CREATE TABLE courses_tutors (
 
 CREATE TABLE course_students (
 	course_id INT,
-	latedays_num INT DEFAULT 0,
-	latedays_len INT,
 	student_id INT,
 	tutor_id INT,
 	FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
