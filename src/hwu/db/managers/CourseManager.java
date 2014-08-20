@@ -29,7 +29,23 @@ public class CourseManager extends Manager {
 	}
 
 	public Course getCourse(int id) {
-		return null;	
+		Course course = null;
+		try {
+			Connection con = dataSource.getConnection();
+			String query = "SELECT * FROM courses WHERE courses.id="+id;
+			PreparedStatement statement = con.prepareStatement(query);
+			ResultSet rs = statement.executeQuery();
+			if (rs.next()) {
+				course = new Course(id, rs.getString("name"), rs.getString("description"),
+						rs.getDate("start_date"), rs.getDate("end_date"), 
+						rs.getInt("latedays_num"), rs.getInt("latedays_len"));
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return course;
 	}
 
 	public List<Course> getCourses(Student student) {
@@ -93,7 +109,7 @@ public class CourseManager extends Manager {
 		try {
 			Connection con = dataSource.getConnection();
 			String query = "SELECT courses.name, courses.ID "
-					+ "FROM (SELECT * FROM courses_tutors WHERE tutor_id = 1) AS cur_tutor "
+					+ "FROM (SELECT * FROM courses_tutors WHERE tutor_id = ?) AS cur_tutor "
 					+ "LEFT JOIN courses ON course_id=courses.id "
 					+ "WHERE courses.start_date <= NOW() AND courses.end_date >= NOW()";
 			PreparedStatement statement = con.prepareStatement(query);
