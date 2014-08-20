@@ -9,7 +9,7 @@ public class Homework {
 	private int number;
 	private Timestamp deadline;
 	private boolean isActive;
-	private boolean latedaysAllowed;
+	private boolean latedaysDisabled;
 
 	/**
 	 * 
@@ -19,16 +19,16 @@ public class Homework {
 	 * @param number
 	 * @param deadline
 	 * @param isActive
-	 * @param latedaysAllowed
+	 * @param latedaysDisabled
 	 */
 	public Homework(Integer id, String name, String description, int number,
-			Timestamp deadline, boolean isActive, boolean latedaysAllowed) {
+			Timestamp deadline, boolean isActive, boolean latedaysDisabled) {
 		this.id = id;
 		this.description = description;
 		this.number = number;
 		this.deadline = deadline;
 		this.isActive = isActive;
-		this.latedaysAllowed = latedaysAllowed;
+		this.latedaysDisabled = latedaysDisabled;
 	}
 
 	/**
@@ -38,12 +38,12 @@ public class Homework {
 	 * @param number
 	 * @param deadline
 	 * @param isActive
-	 * @param latedaysAllowed
+	 * @param latedaysDisabled
 	 */
 	public Homework(String name, String description, int number,
-			Timestamp deadline, boolean isActive, boolean latedaysAllowed) {
+			Timestamp deadline, boolean isActive, boolean latedaysDisabled) {
 		this(null, name, description, number, deadline, isActive,
-				latedaysAllowed);
+				latedaysDisabled);
 	}
 
 	/**
@@ -98,51 +98,8 @@ public class Homework {
 	 * 
 	 * @return
 	 */
-	public boolean latedaysAllowed() {
-		return latedaysAllowed;
-	}
-
-	public class HomeworkForm {
-		private String regex;
-		private int maxFileSize;
-		private String fileExt;
-
-		/**
-		 * 
-		 * @param regex
-		 * @param maxFileSize
-		 * @param fileExt
-		 */
-		public HomeworkForm(String regex, int maxFileSize, String fileExt) {
-			this.regex = regex;
-			this.maxFileSize = maxFileSize;
-			this.fileExt = fileExt;
-		}
-
-		/**
-		 * 
-		 * @return
-		 */
-		public String getRegex() {
-			return regex;
-		}
-
-		/**
-		 * 
-		 * @return
-		 */
-		public int getMaxFileSize() {
-			return maxFileSize;
-		}
-
-		/**
-		 * 
-		 * @return
-		 */
-		public String getFileExtension() {
-			return fileExt;
-		}
-
+	public boolean latedaysDisabled() {
+		return latedaysDisabled;
 	}
 
 }
