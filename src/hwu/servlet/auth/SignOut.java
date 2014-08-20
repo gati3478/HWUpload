@@ -3,19 +3,11 @@ package hwu.servlet.auth;
 import hwu.datamodel.users.User;
 
 import java.io.IOException;
-import java.net.URL;
-import java.net.URLConnection;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 /**
  * Servlet implementation class SignOut
