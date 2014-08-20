@@ -24,6 +24,7 @@ public class Homework {
 	public Homework(Integer id, String name, String description, int number,
 			Timestamp deadline, boolean isActive, boolean latedaysDisabled) {
 		this.id = id;
+		this.name = name;
 		this.description = description;
 		this.number = number;
 		this.deadline = deadline;
