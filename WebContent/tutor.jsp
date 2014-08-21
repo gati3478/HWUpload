@@ -14,9 +14,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%
 	User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
-	UserManager userManager = (UserManager) request.getServletContext()
+	UserManager userManager = (UserManager) application
 			.getAttribute(UserManager.ATTRIBUTE_NAME);
-	CourseManager manager = (CourseManager) request.getServletContext()
+	CourseManager manager = (CourseManager) application
 			.getAttribute(CourseManager.ATTRIBUTE_NAME);
 	if (user == null || !userManager.isTutor(user)) {
 		response.sendRedirect("index.jsp");

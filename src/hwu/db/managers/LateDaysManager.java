@@ -46,8 +46,11 @@ public class LateDaysManager extends Manager {
 	 * 
 	 */
 	private void changeLatedaysState(Homework homework, boolean state) {
-		executeSimpleUpdate("homework", "forbid_latedays", "" + state, "id", ""
-				+ homework.getID());
+		int boolState = 0;
+		if (state)
+			boolState = 1;
+		executeSimpleUpdate("homework", "forbid_latedays", "" + boolState,
+				"id", "" + homework.getID());
 	}
 
 	/**
@@ -128,29 +131,11 @@ public class LateDaysManager extends Manager {
 	/**
 	 * 
 	 * @param course
-	 * @return
-	 */
-	public int getLateDaysNum(Course course) {
-		return 0;
-	}
-
-	/**
-	 * 
-	 * @param course
 	 * @param newNumber
 	 */
 	public void changeLateDaysNum(Course course, int newNumber) {
 		executeSimpleUpdate("courses", "latedays_num", "" + newNumber, "id", ""
 				+ course.getID());
-	}
-
-	/**
-	 * 
-	 * @param course
-	 * @return
-	 */
-	public int getLateDaysLength(Course course) {
-		return 0;
 	}
 
 	/**

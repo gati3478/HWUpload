@@ -18,9 +18,9 @@
 <title>აკადემიური წლები</title>
 <%
 	User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
-	UserManager userManager = (UserManager) request.getServletContext()
+	UserManager userManager = (UserManager) application
 			.getAttribute(UserManager.ATTRIBUTE_NAME);
-	CourseManager manager = (CourseManager) request.getServletContext()
+	CourseManager manager = (CourseManager) application
 			.getAttribute(CourseManager.ATTRIBUTE_NAME);
 	if (user == null || !(user instanceof Lecturer)) {
 		response.sendRedirect("index.jsp");
