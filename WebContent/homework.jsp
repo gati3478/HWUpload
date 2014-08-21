@@ -57,9 +57,9 @@
 	<div class="content_wrapper">
 		<div class="left">
 			<h2><%=thisCourse.getName()%></h2>
-			<h4>
+			<h5>
 				აღწერა:
-				<%=thisCourse.getDescription()%></h4>
+				<%=thisCourse.getDescription()%></h5>
 			<h5>
 				კურსის პერიოდი:
 				<%=thisCourse.getStartDate().toString() + "-დან "
@@ -107,6 +107,8 @@
 		</div>
 		<div class="right">
 			<%
+				if (user instanceof Student)
+					out.println("<a class=\"topright\" href=\"courses.jsp\">ჩემი კურსები</a>");
 				if (userManager.isTutor(user))
 					out.println("<a class=\"topright\" href=\"tutor.jsp\">სატუტორო კურსები</a>");
 			%>
