@@ -164,7 +164,21 @@ public class CourseManager extends Manager {
 	}
 
 	public void enroll(List<Student> students, int course_id) {
-		
+		String query = "INSERT INTO course_students(course_id, student_id) "
+				+ "VALUES(" + course_id + ", (SELECT id FROM users WHERE email_creds=?) )";
+		try {
+			Connection con = dataSource.getConnection();
+			PreparedStatement statement;
+			statement = con.prepareStatement(query);
+			for(Student student: students) {
+				statement.setString(1, student.getEmail());
+				statement.executeUpdate();
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public boolean isAssociated(User user, Course course) {

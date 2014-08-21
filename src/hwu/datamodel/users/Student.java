@@ -22,5 +22,13 @@ public class Student extends User {
 	public Student(String email, String firstName, String lastName) {
 		super(email, firstName, lastName);
 	}
+	
+	/**
+	 * 
+	 * @param email
+	 */
+	public Student(String email) {
+		super(email, null, null);
+	}
 
 }
