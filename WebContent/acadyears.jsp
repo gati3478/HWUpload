@@ -51,7 +51,8 @@
 				if (userManager.isTutor(user))
 					out.println("<a class=\"topright\" href=\"tutor.jsp\">სატუტორო კურსები</a>");
 			%>
-			<a class="topright" href="SignOut">სისტემიდან გასვლა</a>
+			<a class="topright" href="SignOut">სისტემიდან გასვლა (<%=user.getFirstName() + " " + user.getLastName()%>)
+			</a>
 		</div>
 	</div>
 </body>

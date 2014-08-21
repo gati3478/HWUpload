@@ -46,7 +46,8 @@
 				if (user instanceof Lecturer)
 					out.println("<a class=\"topright\" href=\"acadyears.jsp\">აკადემიური წლები</a>");
 			%>
-			<a class="topright" href="SignOut">სისტემიდან გასვლა</a>
+			<a class="topright" href="SignOut">სისტემიდან გასვლა (<%=user.getFirstName() + " " + user.getLastName()%>)
+			</a>
 		</div>
 	</div>
 </body>
