@@ -83,8 +83,10 @@
 				out.println("<ul>");
 				for (Homework hw : hwManager.getHomework(thisCourse)) {
 					// links to course pages
-					out.println("<li><a href='homework.jsp?id=" + hw.getID() + "'>"
-							+ hw.getName() + "</a></li>");
+					if (hw.isActive() || user instanceof Lecturer) {
+						out.println("<li><a href='homework.jsp?id=" + hw.getID()
+								+ "'>" + hw.getName() + "</a></li>");
+					}
 				}
 				out.println("</ul>");
 			%>
