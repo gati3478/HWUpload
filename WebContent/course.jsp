@@ -78,6 +78,7 @@
 					out.println("</h5>");
 				}
 			%>
+			<h3>დავალებები:</h3>
 			<%
 				out.println("<ul>");
 				for (Homework hw : hwManager.getHomework(thisCourse)) {
@@ -86,6 +87,12 @@
 							+ hw.getName() + "</a></li>");
 				}
 				out.println("</ul>");
+			%>
+			<%
+				if (user instanceof Lecturer) {
+					out.println("<a href=\"newhomework.jsp?course_id="
+							+ thisCourse.getID() + "\">დავალების დამატება</a>");
+				}
 			%>
 		</div>
 		<div class="right">
