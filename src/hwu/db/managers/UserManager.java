@@ -67,19 +67,32 @@ public class UserManager extends Manager {
 			String firstName = rs.getString("first_name");
 			String lastName = rs.getString("last_name");
 			String status = rs.getString("status");
-			int tutor = rs.getInt("tutor");
-			boolean isTutor = false;
-			if (tutor == 1)
-				isTutor = true;
 			if (status.equals("student"))
-				user = new Student(id, emailCredential, firstName, lastName,
-						isTutor);
+				user = new Student(id, emailCredential, firstName, lastName);
 			else if (status.equals("lecturer"))
-				user = new Lecturer(id, emailCredential, firstName, lastName,
-						isTutor);
+				user = new Lecturer(id, emailCredential, firstName, lastName);
 		}
 		con.close();
 		return user;
+	}
+
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean isTutor(User user) throws SQLException {
+		boolean result = false;
+		Connection con = dataSource.getConnection();
+		String query = "SELECT tutor FROM users WHERE id = ?;";
+		PreparedStatement stm = con.prepareStatement(query);
+		stm.setInt(1, user.getID());
+		ResultSet rs = stm.executeQuery();
+		if (rs.next())
+			result = rs.getBoolean("tutor");
+		con.close();
+		return result;
 	}
 
 	/**

@@ -6,6 +6,7 @@
 <%@page import="hwu.datamodel.users.Student"%>
 <%@page import="hwu.datamodel.AcadYear"%>
 <%@page import="hwu.datamodel.Course"%>
+<%@page import="hwu.db.managers.UserManager"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
 <!DOCTYPE html>
@@ -17,6 +18,8 @@
 <title>აკადემიური წლები</title>
 <%
 	User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
+	UserManager userManager = (UserManager) request.getServletContext()
+			.getAttribute(UserManager.ATTRIBUTE_NAME);
 	CourseManager manager = (CourseManager) request.getServletContext()
 			.getAttribute(CourseManager.ATTRIBUTE_NAME);
 	if (user == null || !(user instanceof Lecturer)) {
@@ -45,7 +48,7 @@
 		</div>
 		<div class="right">
 			<%
-				if (user.isTutor())
+				if (userManager.isTutor(user))
 					out.println("<a class=\"topright\" href=\"tutor.jsp\">სატუტორო კურსები</a>");
 			%>
 			<a class="topright" href="SignOut">სისტემიდან გასვლა</a>

@@ -6,7 +6,6 @@ public abstract class User {
 	protected String email;
 	protected String firstName;
 	protected String lastName;
-	protected boolean isTutor;
 
 	/**
 	 * 
@@ -14,15 +13,12 @@ public abstract class User {
 	 * @param email
 	 * @param firstName
 	 * @param lastName
-	 * @param isTutor
 	 */
-	public User(Integer id, String email, String firstName, String lastName,
-			boolean isTutor) {
+	public User(Integer id, String email, String firstName, String lastName) {
 		this.id = id;
 		this.email = email;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.isTutor = isTutor;
 	}
 
 	/**
@@ -30,10 +26,9 @@ public abstract class User {
 	 * @param email
 	 * @param firstName
 	 * @param lastName
-	 * @param isTutor
 	 */
-	public User(String email, String firstName, String lastName, boolean isTutor) {
-		this(null, email, firstName, lastName, isTutor);
+	public User(String email, String firstName, String lastName) {
+		this(null, email, firstName, lastName);
 	}
 
 	/**
@@ -66,14 +61,6 @@ public abstract class User {
 	 */
 	public String getLastName() {
 		return lastName;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isTutor() {
-		return isTutor;
 	}
 
 }

@@ -8,12 +8,9 @@ public class Student extends User {
 	 * @param email
 	 * @param firstName
 	 * @param lastName
-	 * @param isTutor
 	 */
-	public Student(Integer id, String email, String firstName, String lastName,
-			boolean isTutor) {
-		super(id, email, firstName, lastName, isTutor);
-		// TODO Auto-generated constructor stub
+	public Student(Integer id, String email, String firstName, String lastName) {
+		super(id, email, firstName, lastName);
 	}
 
 	/**
@@ -21,11 +18,9 @@ public class Student extends User {
 	 * @param email
 	 * @param firstName
 	 * @param lastName
-	 * @param isTutor
 	 */
-	public Student(String email, String firstName, String lastName,
-			boolean isTutor) {
-		super(email, firstName, lastName, isTutor);
+	public Student(String email, String firstName, String lastName) {
+		super(email, firstName, lastName);
 	}
 
 }

@@ -8,11 +8,9 @@ public class Lecturer extends User {
 	 * @param email
 	 * @param firstName
 	 * @param lastName
-	 * @param isTutor
 	 */
-	public Lecturer(Integer id, String email, String firstName,
-			String lastName, boolean isTutor) {
-		super(id, email, firstName, lastName, isTutor);
+	public Lecturer(Integer id, String email, String firstName, String lastName) {
+		super(id, email, firstName, lastName);
 	}
 
 	/**
@@ -20,11 +18,9 @@ public class Lecturer extends User {
 	 * @param email
 	 * @param firstName
 	 * @param lastName
-	 * @param isTutor
 	 */
-	public Lecturer(String email, String firstName, String lastName,
-			boolean isTutor) {
-		super(email, firstName, lastName, isTutor);
+	public Lecturer(String email, String firstName, String lastName) {
+		super(email, firstName, lastName);
 	}
 
 }

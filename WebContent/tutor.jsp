@@ -5,6 +5,7 @@
 <%@page import="hwu.datamodel.users.Lecturer"%>
 <%@page import="hwu.datamodel.Course"%>
 <%@page import="hwu.db.managers.CourseManager"%>
+<%@page import="hwu.db.managers.UserManager"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +14,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%
 	User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
+	UserManager userManager = (UserManager) request.getServletContext()
+			.getAttribute(UserManager.ATTRIBUTE_NAME);
 	CourseManager manager = (CourseManager) request.getServletContext()
 			.getAttribute(CourseManager.ATTRIBUTE_NAME);
-	if (user == null || !user.isTutor()) {
+	if (user == null || !userManager.isTutor(user)) {
 		response.sendRedirect("index.jsp");
 		return;
 	}

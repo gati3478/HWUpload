@@ -83,9 +83,9 @@ public class GoogleSign extends HttpServlet {
 						&& Character.isDigit(email.charAt(6)))
 					isStudent = true;
 				if (isStudent)
-					user = new Student(email_cred, firstName, lastName, false);
+					user = new Student(email_cred, firstName, lastName);
 				else
-					user = new Lecturer(email_cred, firstName, lastName, false);
+					user = new Lecturer(email_cred, firstName, lastName);
 				// adding user to the database (if it didn't exist before)
 				UserManager userManager = (UserManager) request
 						.getServletContext().getAttribute(
