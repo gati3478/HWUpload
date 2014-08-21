@@ -165,12 +165,13 @@ public class CourseManager extends Manager {
 
 	public void enroll(List<Student> students, int course_id) {
 		String query = "INSERT INTO course_students(course_id, student_id) "
-				+ "VALUES(" + course_id + ", (SELECT id FROM users WHERE email_creds=?) )";
+				+ "VALUES(" + course_id
+				+ ", (SELECT id FROM users WHERE email_creds=?) )";
 		try {
 			Connection con = dataSource.getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement(query);
-			for(Student student: students) {
+			for (Student student : students) {
 				statement.setString(1, student.getEmail());
 				statement.executeUpdate();
 			}
@@ -190,12 +191,12 @@ public class CourseManager extends Manager {
 			Connection con = dataSource.getConnection();
 			PreparedStatement statement = null;
 			ResultSet rs;
-			for(int i = 0; i < 3; ++i) {
+			for (int i = 0; i < 3; ++i) {
 				statement = con.prepareStatement(queries[i]);
 				statement.setInt(1, course.getID());
 				statement.setInt(2, user.getID());
 				rs = statement.executeQuery();
-				if(rs.next()) {
+				if (rs.next()) {
 					con.close();
 					return true;
 				}
