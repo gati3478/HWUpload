@@ -17,19 +17,20 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/CreateCourse")
 public class CreateCourse extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    public static final String COURSE_ID_ATTRIBUTE_NAME = "course_id";     
+	
     public CreateCourse() {
         super();
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		User user = (User) request.getSession().getAttribute(User.ATTRIBUTE_NAME);
+		User user = (User) request.getSession().getAttribute(User.ATTRIBUTE_NAME);
 		CourseManager manager = (CourseManager) request.getServletContext().
 				getAttribute(CourseManager.ATTRIBUTE_NAME);
-//		if (user == null || !(user instanceof Lecturer)) {
-//			response.sendRedirect("index.jsp");
-//			return;
-//		}
+		if (user == null || !(user instanceof Lecturer)) {
+			response.sendRedirect("index.jsp");
+			return;
+		}
 		
 		String name = request.getParameter("name");
 		String description = request.getParameter("descr");
@@ -54,8 +55,8 @@ public class CreateCourse extends HttpServlet {
 			forbidLast = request.getParameter("last_day") != null;
 		}
 		
-	
-		manager.addCourseToDB(new Course(name, description, startDate, endDate, lateDaysLen, lateDaysNum, forbidLast));	
+		int course_id = manager.addCourseToDB(new Course(name, description, startDate, endDate, lateDaysLen, lateDaysNum, forbidLast));	
+		request.setAttribute(COURSE_ID_ATTRIBUTE_NAME, course_id);
 	}
 	
 	private Date constructDate(String day, String month, String year) {

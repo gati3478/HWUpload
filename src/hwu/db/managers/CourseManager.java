@@ -15,6 +15,8 @@ import hwu.datamodel.users.User;
 
 import javax.sql.DataSource;
 
+import com.mysql.jdbc.Statement;
+
 public class CourseManager extends Manager {
 	public static final String ATTRIBUTE_NAME = "course_manager";
 
@@ -127,7 +129,9 @@ public class CourseManager extends Manager {
 		return courses;
 	}
 
-	public void addCourseToDB(Course course) {
+	// returns id of the added course
+	public int addCourseToDB(Course course) {
+		int ret = -1;
 		List<String> columnNames = new ArrayList<String>();
 		columnNames.add("name");
 		columnNames.add("description");
@@ -142,9 +146,23 @@ public class CourseManager extends Manager {
 		values.add(course.getEndDate().toString());
 		values.add("" + course.getLateDaysNumber());
 		values.add("" + course.getLateDaysLength());
-		executeInsert("courses", columnNames, values);
+		String query = generateInsertQuery("courses", columnNames, values);
+		try {
+			Connection con = dataSource.getConnection();
+			PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			statement.executeUpdate();
+			ResultSet rs = statement.getGeneratedKeys();
+			rs.next();
+			ret = rs.getInt(1);
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
-	public void enroll(List<Student> students, Course course) {
+	public void enroll(List<Student> students, int course_id) {
+		
 	}
 }
