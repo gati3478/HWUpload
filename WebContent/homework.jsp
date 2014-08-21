@@ -26,25 +26,32 @@
 			.getAttribute(HomeworkManager.ATTRIBUTE_NAME);
 	LateDaysManager ldManager = (LateDaysManager) application
 			.getAttribute(LateDaysManager.ATTRIBUTE_NAME);
-	String courseIdStr = request.getParameter("id");
-	if (user == null || courseIdStr == null) {
+	String homeworkIdStr = request.getParameter("id");
+	String courseIdStr = request.getParameter("course_id");
+	if (user == null || homeworkIdStr == null || courseIdStr == null) {
 		response.sendRedirect("index.jsp");
 		return;
 	}
+	Integer homework_id = null;
 	Integer course_id = null;
 	try {
+		homework_id = Integer.parseInt(homeworkIdStr);
 		course_id = Integer.parseInt(courseIdStr);
 	} catch (NumberFormatException e) {
 		response.sendRedirect("index.jsp");
 		return;
 	}
+	Homework thisHomework = hwManager.getHomework(homework_id);
 	Course thisCourse = manager.getCourse(course_id);
-	if (thisCourse == null || !manager.isAssociated(user, thisCourse)) {
+	if (thisHomework == null
+			|| thisCourse == null
+			|| !manager.isAssociated(user, thisCourse)
+			|| (!thisHomework.isActive() && !(user instanceof Lecturer))) {
 		response.sendRedirect("index.jsp");
 		return;
 	}
 %>
-<title><%=thisCourse.getName()%></title>
+<title><%=thisHomework.getName()%></title>
 </head>
 <body>
 	<div class="content_wrapper">
