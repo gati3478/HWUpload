@@ -164,10 +164,30 @@ public class CourseManager extends Manager {
 	}
 
 	public void enroll(List<Student> students, int course_id) {
-
+		
 	}
 
 	public boolean isAssociated(User user, Course course) {
-		return true;
+		String queries[] = new String[3];
+		queries[0] = "SELECT * FROM course_students WHERE course_id=? AND student_id=?";
+		queries[1] = "SELECT * FROM courses_lecturers WHERE course_id=? AND lecturer_id=?";
+		queries[2] = "SELECT * FROM courses_tutors WHERE course_id=? AND tutor_id=?";
+		try {
+			Connection con = dataSource.getConnection();
+			PreparedStatement statement;
+			ResultSet rs;
+			for(int i = 0; i < 3; ++i) {
+				statement = con.prepareStatement(queries[i]);
+				statement.setInt(1, course.getID());
+				statement.setInt(2, user.getID());
+				rs = statement.executeQuery();
+				if(rs.next()) return true;
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
