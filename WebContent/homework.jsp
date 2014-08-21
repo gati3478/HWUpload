@@ -51,57 +51,51 @@
 		return;
 	}
 %>
-<title><%=thisHomework.getName()%></title>
+<title><%=thisHomework.getName() + " (" + thisCourse.getName()
+					+ ")"%></title>
 </head>
 <body>
 	<div class="content_wrapper">
 		<div class="left">
-			<h2><%=thisCourse.getName()%></h2>
+			<h2>
+				დავალება #<%=thisHomework.getNumber() + ": " + thisHomework.getName()%></h2>
+			<%
+				if (thisHomework.latedaysDisabled()) {
+					out.println("<h4>ამ დავალებაზე გადავადებას ვერ გამოიყენებთ</h4>");
+				}
+			%>
+			<h4>
+				ოფიციალური დედლაინი:
+				<%=thisHomework.getDeadline().toString()%></h4>
+			<h5>
+				კურსი: <a href='course.jsp?id=<%=thisCourse.getID()%>'> <%=thisCourse.getName()%></a>
+			</h5>
 			<h5>
 				აღწერა:
-				<%=thisCourse.getDescription()%></h5>
-			<h5>
-				კურსის პერიოდი:
-				<%=thisCourse.getStartDate().toString() + "-დან "
-					+ thisCourse.getEndDate().toString() + "-მდე"%></h5>
-			<h5>
-				გადავადებათა რაოდენობა:
-				<%=thisCourse.getLateDaysNumber()%></h5>
-			<h5>
-				გადავადების ხანგრძლივობა:
-				<%=thisCourse.getLateDaysLength() + " დღე"%></h5>
+				<%=thisHomework.getDescription()%></h5>
 			<%
 				if (user instanceof Lecturer) {
-					out.println("<a href=\"editcourse.jsp?id=" + thisCourse.getID()
-							+ "\">კურსის ცვლილება</a>");
+					out.println("<a href=\"edithomework.jsp?id="
+							+ thisHomework.getID() + "&course_id="
+							+ thisCourse.getID() + "\">კურსის ცვლილება</a>");
 				}
 			%>
 			<%
 				if (user instanceof Student) {
-					out.print("<h5>");
-					out.print("დარჩენილი გადავადებები: ");
-					out.print(ldManager.lateDaysRemaining(thisCourse,
-							(Student) user));
-					out.println("</h5>");
 				}
-			%>
-			<h3>დავალებები:</h3>
-			<%
-				out.println("<ul>");
-				for (Homework hw : hwManager.getHomework(thisCourse)) {
-					// links to course pages
-					if (hw.isActive() || user instanceof Lecturer) {
-						out.println("<li><a href='homework.jsp?id=" + hw.getID()
-								+ "&course_id=" + thisCourse.getID() + "'>"
-								+ hw.getName() + "</a></li>");
+
+				if (user instanceof Lecturer || userManager.isTutor(user)) {
+					out.println("<ul>");
+					for (Homework hw : hwManager.getHomework(thisCourse)) {
+						// links to course pages
+						if (hw.isActive() || user instanceof Lecturer) {
+							out.println("<li><a href='homework.jsp?id="
+									+ hw.getID() + "&course_id="
+									+ thisCourse.getID() + "'>" + hw.getName()
+									+ "</a></li>");
+						}
 					}
-				}
-				out.println("</ul>");
-			%>
-			<%
-				if (user instanceof Lecturer) {
-					out.println("<a href=\"newhomework.jsp?course_id="
-							+ thisCourse.getID() + "\">დავალების დამატება</a>");
+					out.println("</ul>");
 				}
 			%>
 		</div>

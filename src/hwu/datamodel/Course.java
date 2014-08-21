@@ -22,14 +22,14 @@ public class Course {
 	 * @param lateDaysLength
 	 */
 	public Course(Integer id, String name, String description, Date startDate,
-			Date endDate, int lateDaysLength, int lateDaysNumber) {
+			Date endDate, int lateDaysNumber, int lateDaysLength) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.lateDaysLength = lateDaysLength;
 		this.lateDaysNumber = lateDaysNumber;
+		this.lateDaysLength = lateDaysLength;
 	}
 
 	/**
@@ -41,9 +41,11 @@ public class Course {
 	 * @param lateDaysNumber
 	 * @param lateDaysLength
 	 */
-	public Course(String name, String description, Date startDate, 
-			Date endDate, int lateDaysLength, int lateDaysNumber, boolean forbidLastDay) {
-		this(null, name, description, startDate, endDate, lateDaysLength, lateDaysNumber);
+	public Course(String name, String description, Date startDate,
+			Date endDate, int lateDaysLength, int lateDaysNumber,
+			boolean forbidLastDay) {
+		this(null, name, description, startDate, endDate, lateDaysNumber,
+				lateDaysLength);
 	}
 
 	/**
@@ -85,7 +87,7 @@ public class Course {
 	public Date getStartDate() {
 		return startDate;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -101,7 +103,7 @@ public class Course {
 	public int getLateDaysNumber() {
 		return lateDaysNumber;
 	}
-	
+
 	/**
 	 * 
 	 * @return

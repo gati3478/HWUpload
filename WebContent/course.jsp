@@ -57,20 +57,21 @@
 				კურსის პერიოდი:
 				<%=thisCourse.getStartDate().toString() + "-დან "
 					+ thisCourse.getEndDate().toString() + "-მდე"%></h5>
-			<h5>
-				გადავადებათა რაოდენობა:
-				<%=thisCourse.getLateDaysNumber()%></h5>
-			<h5>
-				გადავადების ხანგრძლივობა:
-				<%=thisCourse.getLateDaysLength() + " დღე"%></h5>
 			<%
+				int latedaysNum = thisCourse.getLateDaysNumber();
+				if (latedaysNum > 0) {
+					out.print("<h5>გადავადებათა რაოდენობა: ");
+					out.println(latedaysNum + "</h5>");
+					out.print("<h5>გადავადების ხანგრძლივობა: ");
+					out.println(thisCourse.getLateDaysLength() + " დღე" + "</h5>");
+				}
 				if (user instanceof Lecturer) {
 					out.println("<a href=\"editcourse.jsp?id=" + thisCourse.getID()
 							+ "\">კურსის ცვლილება</a>");
 				}
 			%>
 			<%
-				if (user instanceof Student) {
+				if (user instanceof Student && latedaysNum > 0) {
 					out.print("<h5>");
 					out.print("დარჩენილი გადავადებები: ");
 					out.print(ldManager.lateDaysRemaining(thisCourse,
@@ -85,7 +86,8 @@
 					// links to course pages
 					if (hw.isActive() || user instanceof Lecturer) {
 						out.println("<li><a href='homework.jsp?id=" + hw.getID()
-								+ "&course_id=" + thisCourse.getID() + "'>"
+								+ "&course_id=" + thisCourse.getID()
+								+ "'> დავალება #" + hw.getNumber() + ": "
 								+ hw.getName() + "</a></li>");
 					}
 				}
