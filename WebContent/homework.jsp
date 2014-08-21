@@ -10,6 +10,8 @@
 <%@page import="hwu.db.managers.UserManager"%>
 <%@page import="hwu.db.managers.HomeworkManager"%>
 <%@page import="hwu.db.managers.LateDaysManager"%>
+<%@page import="java.sql.Timestamp"%>
+<%@page import="java.util.Calendar"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,9 +62,43 @@
 			<h2>
 				დავალება #<%=thisHomework.getNumber() + ": " + thisHomework.getName()%></h2>
 			<%
+				Timestamp deadline = thisHomework.getDeadline();
+				long currTime = System.currentTimeMillis();
+				int lateDaysTaken = 0;
+				int lateDaysLeft = thisCourse.getLateDaysNumber() - lateDaysTaken;
+				boolean hasAlreadyWritten = false;
 				if (thisHomework.latedaysDisabled()) {
-					out.println("<h4>ამ დავალებაზე გადავადებას ვერ გამოიყენებთ</h4>");
+					out.println("<h4>ამ დავალებაზე გადავადება არ გამოიყენება</h4>");
+				} else if (user instanceof Student) {
+					hasAlreadyWritten = hwManager.hasWrittenHomework(thisHomework,
+							(Student) user);
+					lateDaysTaken = ldManager.usedLateDaysForHomework(thisHomework,
+							(Student) user);
+					if (lateDaysTaken > 0) {
+						lateDaysLeft -= lateDaysTaken;
+						int lateDayLength = thisCourse.getLateDaysLength();
+						int totalDays = lateDaysTaken * lateDayLength;
+						Calendar cal = Calendar.getInstance();
+						cal.setTimeInMillis(deadline.getTime());
+						cal.add(Calendar.DAY_OF_MONTH, totalDays);
+						deadline = new Timestamp(cal.getTimeInMillis());
+						out.print("<h4>თქვენი დედლაინი: ");
+						out.print(deadline.toString());
+						out.println("</h4>");
+					}
 				}
+				if (user instanceof Student) {
+					long deadlineTime = deadline.getTime();
+					if (currTime > deadlineTime) {
+						out.print("<h4>თქვენ დავალების დედლაინს გადააცილეთ!<h4>");
+					}
+					out.print("<h4>დედლაინამდე დარჩენილია: ");
+					Timestamp diff = new Timestamp(
+							Math.abs(currTime - deadlineTime));
+					out.print("PSYCH");
+					out.println("</h4>");
+				}
+				//dedlanamde darchenilia
 			%>
 			<h4>
 				ოფიციალური დედლაინი:

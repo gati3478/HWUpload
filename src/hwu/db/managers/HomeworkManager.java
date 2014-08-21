@@ -250,6 +250,28 @@ public class HomeworkManager extends Manager {
 
 	/**
 	 * 
+	 * @param hw
+	 * @param student
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean hasWrittenHomework(Homework hw, Student student)
+			throws SQLException {
+		boolean result = false;
+		Connection con = dataSource.getConnection();
+		String query = "SELECT * FROM files WHERE hw_id = ? AND student_id = ?;";
+		PreparedStatement stm = con.prepareStatement(query);
+		stm.setInt(1, hw.getID());
+		stm.setInt(2, student.getID());
+		ResultSet rs = stm.executeQuery();
+		if (rs.next())
+			result = true;
+		con.close();
+		return result;
+	}
+
+	/**
+	 * 
 	 * @param course
 	 * @return
 	 * @throws SQLException
