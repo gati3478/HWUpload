@@ -188,14 +188,17 @@ public class CourseManager extends Manager {
 		queries[2] = "SELECT * FROM courses_tutors WHERE course_id=? AND tutor_id=?";
 		try {
 			Connection con = dataSource.getConnection();
-			PreparedStatement statement;
+			PreparedStatement statement = null;
 			ResultSet rs;
 			for(int i = 0; i < 3; ++i) {
 				statement = con.prepareStatement(queries[i]);
 				statement.setInt(1, course.getID());
 				statement.setInt(2, user.getID());
 				rs = statement.executeQuery();
-				if(rs.next()) return true;
+				if(rs.next()) {
+					con.close();
+					return true;
+				}
 			}
 			con.close();
 		} catch (SQLException e) {
