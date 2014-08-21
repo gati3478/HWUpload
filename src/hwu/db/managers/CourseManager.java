@@ -149,7 +149,8 @@ public class CourseManager extends Manager {
 		String query = generateInsertQuery("courses", columnNames, values);
 		try {
 			Connection con = dataSource.getConnection();
-			PreparedStatement statement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement statement = con.prepareStatement(query,
+					Statement.RETURN_GENERATED_KEYS);
 			statement.executeUpdate();
 			ResultSet rs = statement.getGeneratedKeys();
 			rs.next();
@@ -163,6 +164,10 @@ public class CourseManager extends Manager {
 	}
 
 	public void enroll(List<Student> students, int course_id) {
-		
+
+	}
+
+	public boolean isAssociated(User user, Course course) {
+		return true;
 	}
 }
