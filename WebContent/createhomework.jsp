@@ -6,36 +6,37 @@ pageEncoding="ISO-8859-1"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Create Course</title>
+<title>Create Homework</title>
 </head>
 <body>
 <%
-User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
-if (user == null || !(user instanceof Lecturer)) {
-response.sendRedirect("index.jsp");
-return;
-}
+	User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
+	if (user == null || !(user instanceof Lecturer)) {
+		response.sendRedirect("index.jsp");
+		return;
+	}
 %>
 <form action="CreateCourse" method="post">
+Number: <input type="text" name="number" maxlength="2" size="2" required> <br>
 Name: <input type="text" name="name" maxlength="64" required> <br>
 Description: <br>
 <textarea rows="4" cols="50" name="descr"></textarea> <br>
 <fieldset>
-<legend>Starting date </legend>
-Day: <input type="text" maxlength="2" size="2" name="fday">
-Month: <input type="text" maxlength="2" size="2" name="fmonth">
-Year: <input type="text" maxlength="4" size="4" name="fyear">
+<legend>Deadline date </legend>
+Day: <input type="text" maxlength="2" size="2" name="eday" required>
+Month: <input type="text" maxlength="2" size="2" name="emonth" required>
+Year: <input type="text" maxlength="4" size="4" name="eyear" required>
 </fieldset>
-<fieldset>
-<legend>Ending date </legend>
-Day: <input type="text" maxlength="2" size="2" name="eday">
-Month: <input type="text" maxlength="2" size="2" name="emonth">
-Year: <input type="text" maxlength="4" size="4" name="eyear">
-</fieldset>
-<input type="checkbox" name="late_days" value="1"> Allow late days <br>
-Enter number of late days here: <input type="text" name="late_day_num" size="2"> <br>
-Enter length of late days here: <input type="text" name="late_day_len" size="2"> <br>
-<input class="button" type="submit" value="Continue to enrollment">
+<input type="checkbox" name="late_days" value="1" checked> Allow late days <br>
+<input type="checkbox" name="active" value="1" checked> Is active <br>
+<br>
+<br>
+Files to upload: <br>
+<ul id="list"> </ul>
+<button type="button" onclick="addField()">+</button>
+<button type="button" onclick="removeField()">-</button>
+<p> <button> Submit </button> </p>
+<script src='plusminus.js'> </script>
 </form>
 </body>
 </html>
