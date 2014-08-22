@@ -1,7 +1,20 @@
 package hwu.servlet.storage;
 
+import hwu.datamodel.Course;
+import hwu.datamodel.Homework;
+import hwu.datamodel.users.Student;
+import hwu.datamodel.users.User;
+import hwu.db.managers.CourseManager;
+import hwu.db.managers.HomeworkManager;
+import hwu.db.managers.LateDaysManager;
+import hwu.util.PathGenerator;
+
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -10,14 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+
 /**
  * Servlet implementation class AvatarUpload
  */
 @WebServlet("/HomeworkUpload")
-@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
-maxFileSize = 1024 * 1024 * 10, // 10MB
-maxRequestSize = 1024 * 1024 * 50)
-// 50MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 128, maxRequestSize = 1024 * 1024 * 256)
 public class HomeworkUpload extends DiskStorage {
 	private static final long serialVersionUID = 1L;
 	private static final String UPLOAD_LOCATION_PROPERTY_KEY = "storage.location";
@@ -44,29 +56,85 @@ public class HomeworkUpload extends DiskStorage {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// creates the save directory if it does not exists
-		File fileSaveDir = new File("");
-		if (!fileSaveDir.exists())
-			fileSaveDir.mkdir();
+		// setting unicode encoding for inputs
+		response.setContentType("UTF-8");
+		response.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("UTF-8");
 
+		User currUser = (User) request.getSession().getAttribute(
+				User.ATTRIBUTE_NAME);
+		HomeworkManager hwManager = (HomeworkManager) getServletContext()
+				.getAttribute(HomeworkManager.ATTRIBUTE_NAME);
+		CourseManager manager = (CourseManager) getServletContext()
+				.getAttribute(CourseManager.ATTRIBUTE_NAME);
+		String hwIdStr = request.getParameter("hw");
+		String courseIdStr = request.getParameter("course");
+
+		// error checking
+		if (currUser == null || hwIdStr == null || courseIdStr == null) {
+			response.sendRedirect("index.jsp");
+			return;
+		}
+
+		Integer homework_id = null;
+		Integer course_id = null;
+		try {
+			homework_id = Integer.parseInt(hwIdStr);
+			course_id = Integer.parseInt(courseIdStr);
+		} catch (NumberFormatException e) {
+			response.sendRedirect("index.jsp");
+			return;
+		}
+
+		Homework thisHomework = null;
+		try {
+			thisHomework = hwManager.getHomework(homework_id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Course thisCourse = manager.getCourse(course_id);
+		if (thisHomework == null || thisCourse == null
+				|| !thisHomework.isActive() || !(currUser instanceof Student)
+				|| !manager.isAssociated(currUser, thisCourse)) {
+			response.sendRedirect("index.jsp");
+			return;
+		}
+
+		// dedlainze shemowmeba!
+
+		// constructing file saving directory
+		String relativeSaveDir = PathGenerator.getRelativePath(thisCourse,
+				thisHomework, (Student) currUser);
+		String finalSaveDir = uploadsDirName + relativeSaveDir;
+		File finalSaveDirFile = new File(finalSaveDir);
+		boolean directoryCleaned = false;
+
+		// storing on disk
 		for (Part part : request.getParts()) {
 			String fileName = extractFileName(part);
 			if (!fileName.isEmpty()) {
+				if (!directoryCleaned) {
+					if (finalSaveDirFile.exists())
+						FileUtils.cleanDirectory(finalSaveDirFile);
+					else
+						finalSaveDirFile.mkdirs();
+					directoryCleaned = true;
+					// attemping to remove old files from the database (if
+					// applicable)
+					hwManager.removeStudentHomeworkFilenames(thisHomework,
+							(Student) currUser);
+				}
+				String savePath = finalSaveDir + File.separator + fileName;
+				hwManager.addHomeworkFilename(thisHomework, (Student) currUser,
+						fileName, new Timestamp(System.currentTimeMillis()));
+				part.write(savePath);
 			}
 		}
 
-		// redirecting to the previous page suer was browsing
-	}
-
-	/*
-	 * Extracts file's extensions from given filename.
-	 */
-	private String getFileExtension(String fileName) {
-		String extension = "";
-		int i = fileName.lastIndexOf('.');
-		if (i > 0)
-			extension = fileName.substring(i + 1);
-		return extension;
+		// redirecting back to homework page
+		response.sendRedirect("homework.jsp?id=" + thisHomework.getID()
+				+ "&course_id=" + thisCourse.getID());
 	}
 
 	/*

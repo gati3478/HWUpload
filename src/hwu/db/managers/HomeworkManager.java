@@ -388,4 +388,22 @@ public class HomeworkManager extends Manager {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param hw
+	 * @param student
+	 */
+	public void removeStudentHomeworkFilenames(Homework hw, Student student) {
+		List<String> whereCols = new ArrayList<String>();
+		whereCols.add("hw_id");
+		whereCols.add("student_id");
+		List<String> whereVals = new ArrayList<String>();
+		whereVals.add("" + hw.getID());
+		whereVals.add("" + student.getID());
+		List<MatchType> matchTypes = new ArrayList<Manager.MatchType>();
+		matchTypes.add(MatchType.EXACT);
+		matchTypes.add(MatchType.EXACT);
+		executeDelete("files", whereCols, whereVals, matchTypes);
+	}
+
 }

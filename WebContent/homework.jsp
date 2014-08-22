@@ -126,7 +126,7 @@
 						out.print("<h4>თქვენ დავალება გაგზავნილი გაქვთ ("
 								+ submissionDate.toString() + ")!");
 						if (currTime <= deadlineTime)
-							out.print(" შენიშნვა: გასწორდება თქვენ მიერ ბოლოს გამოგზავნილი დავალება");
+							out.print(" შენიშნვა: გასწორდება თქვენ მიერ მხოლოდ ბოლოს გამოგზავნილი დავალება");
 						else
 							out.println("<h4>");
 						// shestavaze tavisi dzveli davalebis chamotvirtva
@@ -172,7 +172,7 @@
 								.getHomeworkForms(thisHomework);
 						out.println("<p>დავალების გაგზავნა</p>");
 						out.println("<ul>");
-						out.println("აუცილებელი: ");
+						out.println("გასაგზავნი ფაილები: ");
 						out.println("<form action=\"HomeworkUpload\" method=\"post\" enctype=\"multipart/form-data\">");
 						for (HomeworkForm form : forms) {
 							out.println("<li>");
@@ -191,8 +191,7 @@
 							String extension = form.getFileExtension();
 							int maxFileSize = form.getMaxFileSize();
 							out.print("<input type=\"file\" name=\"file\" size=\"70\"");
-							out.print("accept=\"" + extension + "\"");
-							out.println("required/>");
+							out.print("accept=\"" + extension + "\"/>");
 							out.print(regex + extension);
 							out.println("</li>");
 						}
@@ -212,6 +211,8 @@
 								+ thisCourse.getID() + "\"/>");
 						// submit button
 						out.println("<input type=\"submit\" value=\"დავალების გაგზავნა\"/>");
+						if (hasAlreadyWritten)
+							out.println("<p>ღილაკზე დაჭერის შემთხვევაში თქვენი ძველი დავალება წაიშლება</p>");
 						out.println("</form>");
 						out.println("</ul>");
 					}
