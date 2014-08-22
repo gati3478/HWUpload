@@ -18,6 +18,7 @@
 <link rel="shortcut icon" href="images/favicon.ico" />
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="refresh" content="240">
 <%
 	User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
 	UserManager userManager = (UserManager) application
@@ -65,7 +66,6 @@
 				Timestamp deadline = thisHomework.getDeadline();
 				long currTime = System.currentTimeMillis();
 				int lateDaysTaken = 0;
-				int lateDaysLeft = thisCourse.getLateDaysNumber() - lateDaysTaken;
 				boolean hasAlreadyWritten = false;
 				if (thisHomework.latedaysDisabled()) {
 					out.println("<h4>ამ დავალებაზე გადავადება არ გამოიყენება</h4>");
@@ -75,7 +75,6 @@
 					lateDaysTaken = ldManager.usedLateDaysForHomework(thisHomework,
 							(Student) user);
 					if (lateDaysTaken > 0) {
-						lateDaysLeft -= lateDaysTaken;
 						int lateDayLength = thisCourse.getLateDaysLength();
 						int totalDays = lateDaysTaken * lateDayLength;
 						Calendar cal = Calendar.getInstance();
@@ -85,20 +84,57 @@
 						out.print("<h4>თქვენი დედლაინი: ");
 						out.print(deadline.toString());
 						out.println("</h4>");
+						out.print("<h4>თქვენ ამ დავალებისთვის გამოიყენეთ: ");
+						out.print(lateDaysTaken + " ("
+								+ thisCourse.getLateDaysLength()
+								+ "-დღიანი) გადავადება");
+						out.println("</h4>");
+					}
+					out.print("<h4>თქვენ დაგრჩათ: ");
+					int lateDaysLeft = thisCourse.getLateDaysNumber()
+							- lateDaysTaken;
+					out.print(lateDaysLeft + " გადავადება");
+					out.println("</h4>");
+					if (lateDaysLeft > 0) {
+						out.print("<form action=\"UseLateDay\" method=\"post\">");
+						out.print("<input type=\"hidden\" name=\"hw\" value=\""
+								+ thisHomework.getID() + "\">");
+						out.print("<input type=\"hidden\" name=\"course\" value=\""
+								+ thisCourse.getID() + "\">");
+						out.print("<input type=\"submit\" value=\"გადავადების გამოყენება\">");
+						out.println("</form>");
 					}
 				}
 				if (user instanceof Student) {
 					long deadlineTime = deadline.getTime();
-					if (currTime > deadlineTime) {
+					Timestamp submissionDate = null;
+					if (hasAlreadyWritten) {
+						submissionDate = hwManager.getHomeworkSubmissionDate(
+								thisHomework, (Student) user);
+						out.print("<h4>თქვენ დავალება გაგზავნილი გაქვთ ("
+								+ submissionDate.toString() + ")!");
+						if (currTime <= deadlineTime)
+							out.print(" შენიშნვა: გასწორდება თქვენ მიერ ბოლოს გამოგზავნილი დავალება");
+						else
+							out.println("<h4>");
+						// shestavaze tavisi dzveli davalebis chamotvirtva
+					}
+					if (currTime > deadlineTime && !hasAlreadyWritten) {
 						out.print("<h4>თქვენ დავალების დედლაინს გადააცილეთ!<h4>");
 					}
-					out.print("<h4>დედლაინამდე დარჩენილია: ");
-					Timestamp diff = new Timestamp(
-							Math.abs(currTime - deadlineTime));
-					out.print("PSYCH");
-					out.println("</h4>");
+
+					if (currTime < deadlineTime) {
+						out.print("<h4>დედლაინამდე დარჩენილია: ");
+						Timestamp diff = new Timestamp(currTime - deadlineTime);
+						Calendar cal = Calendar.getInstance();
+						cal.setTimeInMillis(deadlineTime - currTime);
+						out.print(cal.get(Calendar.MONTH) + " თვე, ");
+						out.print(cal.get(Calendar.DAY_OF_MONTH) + " დღე, ");
+						out.print(cal.get(Calendar.HOUR_OF_DAY) + " საათი და ");
+						out.print(cal.get(Calendar.MINUTE) + " წუთი ");
+						out.println("</h4>");
+					}
 				}
-				//dedlanamde darchenilia
 			%>
 			<h4>
 				ოფიციალური დედლაინი:
