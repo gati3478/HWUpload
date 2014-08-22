@@ -1,6 +1,11 @@
 package hwu.datamodel;
 
 public class HomeworkForm {
+	public static String FIRST_NAME_EX = "#name";
+	public static String LAST_NAME_EX = "#surname";
+	public static String INITIAL_EX = "#initial";
+	public static String GROUP_EX = "#group";
+	public static String EMAIL_EX = "#emmail";
 	private Integer id;
 	private String regex;
 	private int maxFileSize;

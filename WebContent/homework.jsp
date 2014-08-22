@@ -61,6 +61,16 @@
 </head>
 <body>
 	<div class="content_wrapper">
+		<div class="right">
+			<%
+				if (user instanceof Student)
+					out.println("<a class=\"topright\" href=\"courses.jsp\">ჩემი კურსები</a>");
+				if (userManager.isTutor(user))
+					out.println("<a class=\"topright\" href=\"tutor.jsp\">სატუტორო კურსები</a>");
+			%>
+			<a class="topright" href="SignOut">სისტემიდან გასვლა (<%=user.getFirstName() + " " + user.getLastName()%>)
+			</a>
+		</div>
 		<div class="left">
 			<h2>
 				დავალება #<%=thisHomework.getNumber() + ": " + thisHomework.getName()%></h2>
@@ -157,12 +167,52 @@
 			<%
 				if (user instanceof Student) {
 					if (deadline.getTime() > System.currentTimeMillis()) {
+						// drawing upload form
 						List<HomeworkForm> forms = hwManager
 								.getHomeworkForms(thisHomework);
+						out.println("<p>დავალების გაგზავნა</p>");
 						out.println("<ul>");
+						out.println("აუცილებელი: ");
+						out.println("<form action=\"HomeworkUpload\" method=\"post\" enctype=\"multipart/form-data\">");
 						for (HomeworkForm form : forms) {
-							out.println(form.getRegex());
+							out.println("<li>");
+							String emailCred = user.getEmail().toLowerCase();
+							String firstName = user.getFirstName().toLowerCase();
+							String lastName = user.getLastName().toLowerCase();
+							String regex = form.getRegex();
+							regex = regex.replaceAll(HomeworkForm.FIRST_NAME_EX,
+									firstName);
+							regex = regex.replaceAll(HomeworkForm.LAST_NAME_EX,
+									lastName);
+							regex = regex.replaceAll(HomeworkForm.INITIAL_EX, ""
+									+ firstName.charAt(0));
+							regex = regex.replace(HomeworkForm.GROUP_EX,
+									"{თქვენი ჯგუფის ნომერი}");
+							String extension = form.getFileExtension();
+							int maxFileSize = form.getMaxFileSize();
+							out.print("<input type=\"file\" name=\"file\" size=\"70\"");
+							out.print("accept=\"" + extension + "\"");
+							out.println("required/>");
+							out.print(regex + extension);
+							out.println("</li>");
 						}
+						out.println("<br/>");
+						out.println("დამატებითი: ");
+						// zip file
+						out.println("<li>");
+						out.println("<input type=\"file\" name=\"file\" size=\"70\"");
+						out.print("accept=\".zip, .rar\"/>");
+						out.println("ნებისმიერი .zip ან .rar გაფართოების ფაილი");
+						out.println("</li>");
+						out.println("<br/>");
+						// some hidden values to be passed
+						out.println("<input type=\"hidden\" name=\"hw\" value=\""
+								+ thisHomework.getID() + "\"/>");
+						out.println("<input type=\"hidden\" name=\"course\" value=\""
+								+ thisCourse.getID() + "\"/>");
+						// submit button
+						out.println("<input type=\"submit\" value=\"დავალების გაგზავნა\"/>");
+						out.println("</form>");
 						out.println("</ul>");
 					}
 				}
@@ -181,16 +231,6 @@
 					out.println("</ul>");
 				}
 			%>
-		</div>
-		<div class="right">
-			<%
-				if (user instanceof Student)
-					out.println("<a class=\"topright\" href=\"courses.jsp\">ჩემი კურსები</a>");
-				if (userManager.isTutor(user))
-					out.println("<a class=\"topright\" href=\"tutor.jsp\">სატუტორო კურსები</a>");
-			%>
-			<a class="topright" href="SignOut">სისტემიდან გასვლა (<%=user.getFirstName() + " " + user.getLastName()%>)
-			</a>
 		</div>
 	</div>
 </body>

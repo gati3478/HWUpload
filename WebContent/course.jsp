@@ -48,6 +48,16 @@
 </head>
 <body>
 	<div class="content_wrapper">
+		<div class="right">
+			<%
+				if (user instanceof Student)
+					out.println("<a class=\"topright\" href=\"courses.jsp\">ჩემი კურსები</a>");
+				if (userManager.isTutor(user))
+					out.println("<a class=\"topright\" href=\"tutor.jsp\">სატუტორო კურსები</a>");
+			%>
+			<a class="topright" href="SignOut">სისტემიდან გასვლა (<%=user.getFirstName() + " " + user.getLastName()%>)
+			</a>
+		</div>
 		<div class="left">
 			<h2><%=thisCourse.getName()%></h2>
 			<h5>
@@ -99,16 +109,6 @@
 							+ thisCourse.getID() + "\">დავალების დამატება</a>");
 				}
 			%>
-		</div>
-		<div class="right">
-			<%
-				if (user instanceof Student)
-					out.println("<a class=\"topright\" href=\"courses.jsp\">ჩემი კურსები</a>");
-				if (userManager.isTutor(user))
-					out.println("<a class=\"topright\" href=\"tutor.jsp\">სატუტორო კურსები</a>");
-			%>
-			<a class="topright" href="SignOut">სისტემიდან გასვლა (<%=user.getFirstName() + " " + user.getLastName()%>)
-			</a>
 		</div>
 	</div>
 </body>

@@ -27,6 +27,16 @@
 </head>
 <body>
 	<div class="content_wrapper">
+		<div class="right">
+			<%
+				if (user instanceof Student)
+					out.println("<a class=\"topright\" href=\"courses.jsp\">ჩემი კურსები</a>");
+				if (user instanceof Lecturer)
+					out.println("<a class=\"topright\" href=\"acadyears.jsp\">აკადემიური წლები</a>");
+			%>
+			<a class="topright" href="SignOut">სისტემიდან გასვლა (<%=user.getFirstName() + " " + user.getLastName()%>)
+			</a>
+		</div>
 		<div class="left">
 			<h2>სატუტორო კურსები:</h2>
 			<%
@@ -38,16 +48,6 @@
 				}
 				out.println("</ul>");
 			%>
-		</div>
-		<div class="right">
-			<%
-				if (user instanceof Student)
-					out.println("<a class=\"topright\" href=\"courses.jsp\">ჩემი კურსები</a>");
-				if (user instanceof Lecturer)
-					out.println("<a class=\"topright\" href=\"acadyears.jsp\">აკადემიური წლები</a>");
-			%>
-			<a class="topright" href="SignOut">სისტემიდან გასვლა (<%=user.getFirstName() + " " + user.getLastName()%>)
-			</a>
 		</div>
 	</div>
 </body>
