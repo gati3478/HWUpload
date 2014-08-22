@@ -211,8 +211,6 @@
 								+ thisCourse.getID() + "\"/>");
 						// submit button
 						out.println("<input type=\"submit\" value=\"დავალების გაგზავნა\"/>");
-						if (hasAlreadyWritten)
-							out.println("<p>ღილაკზე დაჭერის შემთხვევაში თქვენი ძველი დავალება წაიშლება</p>");
 						out.println("</form>");
 						out.println("</ul>");
 					}

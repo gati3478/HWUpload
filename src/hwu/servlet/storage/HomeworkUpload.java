@@ -6,15 +6,12 @@ import hwu.datamodel.users.Student;
 import hwu.datamodel.users.User;
 import hwu.db.managers.CourseManager;
 import hwu.db.managers.HomeworkManager;
-import hwu.db.managers.LateDaysManager;
 import hwu.util.PathGenerator;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
