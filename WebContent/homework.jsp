@@ -154,6 +154,7 @@
 			%>
 			<%
 				if (user instanceof Student) {
+					// atvirtvis forma an vabshe ar daixatos
 				}
 
 				if (user instanceof Lecturer || userManager.isTutor(user)) {

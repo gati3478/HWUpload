@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import hwu.datamodel.Course;
 import hwu.datamodel.users.Lecturer;
 import hwu.datamodel.users.Student;
 import hwu.datamodel.users.User;
@@ -109,6 +112,66 @@ public class UserManager extends Manager {
 	 */
 	public void revokeTutor(User user) {
 		executeSimpleUpdate("users", "tutor", "0", "id", "" + user.getID());
+	}
+
+	/**
+	 * 
+	 * @param course
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Student> getEnrolledStudents(Course course) throws SQLException {
+		List<Student> students = new ArrayList<Student>();
+		StringBuilder qb = new StringBuilder("SELECT users.id, ");
+		qb.append("users.email_creds, users.first_name, users.last_name ");
+		qb.append("FROM course_students INNER JOIN users ON ");
+		qb.append("users.id = course_students.student_id WHERE course_id = ?;");
+		Connection con = dataSource.getConnection();
+		PreparedStatement stm = con.prepareStatement(qb.toString());
+		stm.setInt(1, course.getID());
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			int id = rs.getInt("id");
+			String emailCreds = rs.getString("email_creds");
+			String firstName = rs.getString("first_name");
+			String lastName = rs.getString("last_name");
+			Student user = new Student(id, emailCreds, firstName, lastName);
+			students.add(user);
+		}
+		con.close();
+		return students;
+	}
+
+	/**
+	 * 
+	 * @param course
+	 * @param tutor
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Student> getAssignedEnrolledStudents(Course course, User tutor)
+			throws SQLException {
+		List<Student> students = new ArrayList<Student>();
+		StringBuilder qb = new StringBuilder("SELECT users.id, ");
+		qb.append("users.email_creds, users.first_name, users.last_name ");
+		qb.append("FROM course_students INNER JOIN users ON ");
+		qb.append("users.id = course_students.student_id ");
+		qb.append("WHERE course_id = ? AND tutor_id = ?;");
+		Connection con = dataSource.getConnection();
+		PreparedStatement stm = con.prepareStatement(qb.toString());
+		stm.setInt(1, course.getID());
+		stm.setInt(2, tutor.getID());
+		ResultSet rs = stm.executeQuery();
+		while (rs.next()) {
+			int id = rs.getInt("id");
+			String emailCreds = rs.getString("email_creds");
+			String firstName = rs.getString("first_name");
+			String lastName = rs.getString("last_name");
+			Student user = new Student(id, emailCreds, firstName, lastName);
+			students.add(user);
+		}
+		con.close();
+		return students;
 	}
 
 }
