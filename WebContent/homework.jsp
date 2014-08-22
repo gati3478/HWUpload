@@ -1,3 +1,4 @@
+<%@page import="hwu.datamodel.HomeworkForm"%>
 <%@page import="hwu.db.managers.HomeworkManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -12,6 +13,7 @@
 <%@page import="hwu.db.managers.LateDaysManager"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="java.util.Calendar"%>
+<%@page import="java.util.List"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -154,7 +156,15 @@
 			%>
 			<%
 				if (user instanceof Student) {
-					// atvirtvis forma an vabshe ar daixatos
+					if (deadline.getTime() > System.currentTimeMillis()) {
+						List<HomeworkForm> forms = hwManager
+								.getHomeworkForms(thisHomework);
+						out.println("<ul>");
+						for (HomeworkForm form : forms) {
+							out.println(form.getRegex());
+						}
+						out.println("</ul>");
+					}
 				}
 
 				if (user instanceof Lecturer || userManager.isTutor(user)) {
