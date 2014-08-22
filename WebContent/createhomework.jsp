@@ -16,7 +16,7 @@ if (user == null || !(user instanceof Lecturer)) {
 	return;
 }
 %>
-<form action="CreateCourse" method="post">
+<form action="CreateHomework" method="post">
 Number: <input type="text" name="number" maxlength="2" size="2" required> <br>
 Name: <input type="text" name="name" maxlength="64" required> <br>
 Description: <br> 
