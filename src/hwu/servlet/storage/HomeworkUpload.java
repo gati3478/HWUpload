@@ -26,7 +26,7 @@ import javax.servlet.http.Part;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 
 /**
- * Servlet implementation class AvatarUpload
+ * Servlet implementation class HomeworkUpload
  */
 @WebServlet("/HomeworkUpload")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, maxFileSize = 1024 * 1024 * 128, maxRequestSize = 1024 * 1024 * 256)

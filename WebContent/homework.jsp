@@ -129,7 +129,14 @@
 							out.print(" შენიშნვა: გასწორდება თქვენ მიერ მხოლოდ ბოლოს გამოგზავნილი დავალება");
 						else
 							out.println("<h4>");
-						// shestavaze tavisi dzveli davalebis chamotvirtva
+						// offer homework download
+						out.println("<form action=\"UserHomeworkDownload\" method=\"post\">");
+						out.print("<input type=\"hidden\" name=\"hw\" value=\""
+								+ thisHomework.getID() + "\">");
+						out.print("<input type=\"hidden\" name=\"course\" value=\""
+								+ thisCourse.getID() + "\">");
+						out.print("<input type=\"submit\" value=\"გაგზავნილი დავალების ჩამოტვირთვა (.zip)\">");
+						out.println("</form>");
 					}
 					if (currTime > deadlineTime && !hasAlreadyWritten) {
 						out.print("<h4>თქვენ დავალების დედლაინს გადააცილეთ!<h4>");
@@ -217,14 +224,36 @@
 				}
 
 				if (user instanceof Lecturer || userManager.isTutor(user)) {
+					List<Student> students = null;
+					if (user instanceof Lecturer)
+						students = userManager.getEnrolledStudents(thisCourse);
+					else
+						students = userManager.getAssignedEnrolledStudents(
+								thisCourse, user);
+					// download all sent homework
+					out.println("<form action=\"HomeworkDownload\" method=\"post\">");
+					out.print("<input type=\"hidden\" name=\"hw\" value=\""
+							+ thisHomework.getID() + "\">");
+					out.print("<input type=\"hidden\" name=\"course\" value=\""
+							+ thisCourse.getID() + "\">");
+					out.print("<input type=\"submit\" value=\"მიღებული დავალებების ერთიანად ჩამოტვირთვა (.zip)\">");
+					out.println("</form>");
+					// individual homework
 					out.println("<ul>");
-					for (Homework hw : hwManager.getHomework(thisCourse)) {
-						// links to course pages
-						if (hw.isActive() || user instanceof Lecturer) {
-							out.println("<li><a href='homework.jsp?id="
-									+ hw.getID() + "&course_id="
-									+ thisCourse.getID() + "'>" + hw.getName()
-									+ "</a></li>");
+					out.println("გამოგზავნილი დავალებები:");
+					for (Student student : students) {
+						if (hwManager.hasWrittenHomework(thisHomework, student)) {
+							out.println("</br>");
+							out.println("<li>");
+							out.println("<a href=\"UserHomeworkDownload?hw=");
+							out.print(thisHomework.getID() + "&course=");
+							out.print(thisCourse.getID() + "&student=");
+							out.print(student.getEmail() + "\">");
+							out.print(student.getFirstName() + " ");
+							out.print(student.getLastName() + " ");
+							out.print("(" + student.getEmail() + ")");
+							out.print("</a>");
+							out.println("</li>");
 						}
 					}
 					out.println("</ul>");
