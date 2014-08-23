@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +62,8 @@ public class HomeworkManager extends Manager {
 	 * @param homework
 	 * @param course
 	 */
-	public void addHomework(Homework homework, Course course) {
+	public int addHomework(Homework homework, Course course) {
+		int ret = -1;
 		List<String> columnNames = new ArrayList<String>();
 		columnNames.add("name");
 		columnNames.add("description");
@@ -84,7 +86,21 @@ public class HomeworkManager extends Manager {
 		if (!homework.latedaysDisabled())
 			lateDaysDis = 0;
 		values.add("" + lateDaysDis);
-		executeInsert("homework", columnNames, values);
+		String query = generateInsertQuery("homework", columnNames, values);
+		try {
+			Connection con = dataSource.getConnection();
+			PreparedStatement statement = con.prepareStatement(query,
+					Statement.RETURN_GENERATED_KEYS);
+			statement.executeUpdate();
+			ResultSet rs = statement.getGeneratedKeys();
+			rs.next();
+			ret = rs.getInt(1);
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
 	/**
