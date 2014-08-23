@@ -6,12 +6,15 @@ import hwu.datamodel.users.Student;
 import hwu.datamodel.users.User;
 import hwu.db.managers.CourseManager;
 import hwu.db.managers.HomeworkManager;
+import hwu.db.managers.LateDaysManager;
 import hwu.util.PathGenerator;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Calendar;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -64,6 +67,8 @@ public class HomeworkUpload extends DiskStorage {
 				.getAttribute(HomeworkManager.ATTRIBUTE_NAME);
 		CourseManager manager = (CourseManager) getServletContext()
 				.getAttribute(CourseManager.ATTRIBUTE_NAME);
+		LateDaysManager ldManager = (LateDaysManager) getServletContext()
+				.getAttribute(LateDaysManager.ATTRIBUTE_NAME);
 		String hwIdStr = request.getParameter("hw");
 		String courseIdStr = request.getParameter("course");
 
@@ -98,7 +103,27 @@ public class HomeworkUpload extends DiskStorage {
 			return;
 		}
 
-		// dedlainze shemowmeba!
+		// checking on deadline
+		Timestamp deadline = thisHomework.getDeadline();
+		int lateDaysTaken = 0;
+		try {
+			lateDaysTaken = ldManager.usedLateDaysForHomework(thisHomework,
+					(Student) currUser);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int lateDayLength = thisCourse.getLateDaysLength();
+		int totalDays = lateDaysTaken * lateDayLength;
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(deadline.getTime());
+		cal.add(Calendar.DAY_OF_MONTH, totalDays);
+		deadline = new Timestamp(cal.getTimeInMillis());
+
+		if (deadline.getTime() < System.currentTimeMillis()) {
+			response.sendRedirect("homework.jsp?id=" + thisHomework.getID()
+					+ "&course_id=" + thisCourse.getID());
+		}
 
 		// constructing file saving directory
 		String relativeSaveDir = PathGenerator.getRelativePath(thisCourse,
