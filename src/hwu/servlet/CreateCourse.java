@@ -45,12 +45,12 @@ public class CreateCourse extends HttpServlet {
 				request.getParameter("fmonth"), request.getParameter("fyear"));
 		Date endDate = constructDate(request.getParameter("eday"),
 				request.getParameter("emonth"), request.getParameter("eyear"));
-		if (name == null || description == null || startDate == null
-				|| endDate == null) {
+		
+		if(startDate == null || endDate == null) {
 			response.sendRedirect("createcourse.jsp");
 			return;
 		}
-
+		
 		int lateDaysNum = -1;
 		int lateDaysLen = -1;
 		boolean forbidLast = false;

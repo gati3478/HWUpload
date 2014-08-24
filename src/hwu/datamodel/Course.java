@@ -10,6 +10,7 @@ public class Course {
 	private Date endDate;
 	private int lateDaysNumber;
 	private int lateDaysLength;
+	public static final String COURSE_ID_PARAM_NAME = "course_id";
 
 	/**
 	 * 
@@ -54,6 +55,13 @@ public class Course {
 	 */
 	public Course(String name, int id) {
 		this(id, name, null, null, null, -1, -1);
+	}
+
+	/**
+	 * @param id
+	 */
+	public Course(int id) {
+		this(id, null, null, null, null, -1, -1);
 	}
 
 	/**

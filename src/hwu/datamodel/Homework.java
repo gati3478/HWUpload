@@ -49,6 +49,14 @@ public class Homework {
 
 	/**
 	 * 
+	 * @param id
+	 */
+	public Homework(int id) {
+		this(id, null, null, -1, null, false, false);
+	}
+
+	/**
+	 * 
 	 * @return
 	 */
 	public Integer getID() {

@@ -163,9 +163,9 @@ public class CourseManager extends Manager {
 		return ret;
 	}
 
-	public void enroll(List<Student> students, int course_id) {
+	public void enroll(List<Student> students, Course course) {
 		String query = "INSERT INTO course_students(course_id, student_id) "
-				+ "VALUES(" + course_id
+				+ "VALUES(" + course.getID()
 				+ ", (SELECT id FROM users WHERE email_creds=?) )";
 		try {
 			Connection con = dataSource.getConnection();

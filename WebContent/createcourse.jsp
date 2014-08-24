@@ -10,11 +10,11 @@
 </head>
 <body>
 <% 
-User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
-if (user == null || !(user instanceof Lecturer)) {
-	response.sendRedirect("index.jsp");
-	return;
-}
+	User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
+	if (user == null || !(user instanceof Lecturer)) {
+	//	response.sendRedirect("index.jsp");
+	//	return;
+	}
 %>
 <form action="CreateCourse" method="post">
 Name: <input type="text" name="name" maxlength="64" required> <br>
@@ -22,15 +22,15 @@ Description: <br>
 <textarea rows="4" cols="50" name="descr"></textarea> <br>
 <fieldset>
   <legend>Starting date </legend>
-  Day: <input type="text" maxlength="2" size="2" name="fday"> 
-  Month: <input type="text" maxlength="2" size="2" name="fmonth"> 
-  Year: <input type="text" maxlength="4" size="4" name="fyear">
+  Day: <input type="text" maxlength="2" size="2" name="fday" required> 
+  Month: <input type="text" maxlength="2" size="2" name="fmonth" required> 
+  Year: <input type="text" maxlength="4" size="4" name="fyear" required>
 </fieldset>
 <fieldset>
   <legend>Ending date </legend>
-  Day: <input type="text" maxlength="2" size="2" name="eday"> 
-  Month: <input type="text" maxlength="2" size="2" name="emonth"> 
-  Year: <input type="text" maxlength="4" size="4" name="eyear">
+  Day: <input type="text" maxlength="2" size="2" name="eday" required> 
+  Month: <input type="text" maxlength="2" size="2" name="emonth" required> 
+  Year: <input type="text" maxlength="4" size="4" name="eyear" required>
 </fieldset>
 <input type="checkbox" name="late_days" value="1"> Allow late days <br>
 Enter number of late days here: <input type="text" name="late_day_num" size="2"> <br>
