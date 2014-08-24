@@ -97,7 +97,7 @@ public class CreateHomework extends HttpServlet {
 			String extension = request.getParameter("ext"+i);
 			if(regex == null) break;
 			// temporarily 128
-			forms.add(new HomeworkForm(regex, 128, extension));			
+			forms.add(new HomeworkForm(regex, extension));			
 			i++;
 		}
 		return forms;

@@ -8,7 +8,6 @@ public class HomeworkForm {
 	public static String EMAIL_EX = "#emmail";
 	private Integer id;
 	private String regex;
-	private int maxFileSize;
 	private String fileExt;
 
 	/**
@@ -18,11 +17,9 @@ public class HomeworkForm {
 	 * @param maxFileSize
 	 * @param fileExt
 	 */
-	public HomeworkForm(Integer id, String regex, int maxFileSize,
-			String fileExt) {
+	public HomeworkForm(Integer id, String regex, String fileExt) {
 		this.id = id;
 		this.regex = regex;
-		this.maxFileSize = maxFileSize;
 		this.fileExt = fileExt;
 	}
 
@@ -32,8 +29,8 @@ public class HomeworkForm {
 	 * @param maxFileSize
 	 * @param fileExt
 	 */
-	public HomeworkForm(String regex, int maxFileSize, String fileExt) {
-		this(null, regex, maxFileSize, fileExt);
+	public HomeworkForm(String regex, String fileExt) {
+		this(null, regex, fileExt);
 	}
 
 	/**
@@ -50,14 +47,6 @@ public class HomeworkForm {
 	 */
 	public String getRegex() {
 		return regex;
-	}
-
-	/**
-	 * 
-	 * @return
-	 */
-	public int getMaxFileSize() {
-		return maxFileSize;
 	}
 
 	/**

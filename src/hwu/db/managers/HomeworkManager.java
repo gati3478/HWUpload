@@ -196,10 +196,8 @@ public class HomeworkManager extends Manager {
 		while (rs.next()) {
 			Integer id = rs.getInt("id");
 			String regex = rs.getString("regex");
-			int maxFileSize = rs.getInt("max_filesize");
 			String fileExt = rs.getString("file_extension");
-			HomeworkForm form = new HomeworkForm(id, regex, maxFileSize,
-					fileExt);
+			HomeworkForm form = new HomeworkForm(id, regex, fileExt);
 			forms.add(form);
 		}
 		con.close();
@@ -215,12 +213,10 @@ public class HomeworkManager extends Manager {
 		List<String> columnNames = new ArrayList<String>();
 		columnNames.add("hw_id");
 		columnNames.add("regex");
-		columnNames.add("max_filesize");
 		columnNames.add("file_extension");
 		List<String> values = new ArrayList<String>();
 		values.add("" + homework.getID());
 		values.add(form.getRegex());
-		values.add("" + form.getMaxFileSize());
 		values.add(form.getFileExtension());
 		executeInsert("homework_forms", columnNames, values);
 	}
