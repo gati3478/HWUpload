@@ -196,7 +196,6 @@
 							regex = regex.replace(HomeworkForm.GROUP_EX,
 									"{თქვენი ჯგუფის ნომერი}");
 							String extension = form.getFileExtension();
-							int maxFileSize = form.getMaxFileSize();
 							out.print("<input type=\"file\" name=\"file\" size=\"70\"");
 							out.print("accept=\"" + extension + "\"/>");
 							out.print(regex + extension);

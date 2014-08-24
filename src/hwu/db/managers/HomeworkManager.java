@@ -234,16 +234,6 @@ public class HomeworkManager extends Manager {
 	/**
 	 * 
 	 * @param form
-	 * @param newMaxFileSize
-	 */
-	public void changeFormMaxFileSize(HomeworkForm form, int newMaxFileSize) {
-		executeSimpleUpdate("homework_forms", "max_filesize", ""
-				+ newMaxFileSize, "id", "" + form.getID());
-	}
-
-	/**
-	 * 
-	 * @param form
 	 * @param newExt
 	 */
 	public void changeFormFileExtension(HomeworkForm form, String newExt) {
