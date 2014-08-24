@@ -43,8 +43,8 @@ Time: <select name="hours" id="hours"> </select> <select name="minutes" id="minu
 <button type="button" onclick="addField()">+</button>
 <button type="button" onclick="removeField()">-</button>
 <div> <button> Submit </button> </div>
-<script src='plusminus.js'> </script>
-<script src='timechoice.js'> </script>
+<script src='js/plusminus.js'> </script>
+<script src='js/timechoice.js'> </script>
 </form>
 </body>
 </html>
