@@ -53,6 +53,7 @@
 					out.println("</ul>");
 				}
 			%>
+			<a href='createcourse.jsp'>კურსის შექმნა</a>
 		</div>
 	</div>
 </body>

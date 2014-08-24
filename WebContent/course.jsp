@@ -105,7 +105,7 @@
 			%>
 			<%
 				if (user instanceof Lecturer) {
-					out.println("<a href=\"newhomework.jsp?course_id="
+					out.println("<a href=\"createhomework.jsp?course_id="
 							+ thisCourse.getID() + "\">დავალების დამატება</a>");
 				}
 			%>
