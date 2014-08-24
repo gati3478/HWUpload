@@ -110,11 +110,27 @@ public class LateDaysManager extends Manager {
 	/**
 	 * 
 	 * @param student
-	 * @return
 	 * @throws SQLException
+	 * @return
 	 */
-	public int usedLateDays(Course course, Student student) throws SQLException {
+	public int usedLateDays(Course course, Student student) {
 		int lateDaysTaken = 0;
+		try {
+			Connection con = dataSource.getConnection();
+			String query = "SELECT SUM(latedays_taken) FROM latedays_history LEFT JOIN "
+					+ "homework ON homework.id=latedays_history.hw_id "
+					+ "WHERE student_id=? AND homework.course_id=?";
+			PreparedStatement statement = con.prepareStatement(query);
+			statement.setInt(1, student.getID());
+			statement.setInt(2, course.getID());
+			ResultSet rs = statement.executeQuery();
+			rs.next();
+			lateDaysTaken = rs.getInt(1);
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return lateDaysTaken;
 	}
 
@@ -125,7 +141,23 @@ public class LateDaysManager extends Manager {
 	 * @return
 	 */
 	public int lateDaysRemaining(Course course, Student student) {
-		return 0;
+		int all = 0;
+		int taken = usedLateDays(course, student);
+		try {
+			Connection con = dataSource.getConnection();
+			List<String> columns = new ArrayList<String>();
+			columns.add("latedays_num");
+			String query = generateSimpleSelectQuery("courses", columns, "id", "" + course.getID());
+			PreparedStatement statement = con.prepareStatement(query);
+			ResultSet rs = statement.executeQuery();
+			rs.next();
+			all = rs.getInt(1);
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return all - taken;
 	}
 
 	/**
