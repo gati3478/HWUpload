@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context>
 	<Resource name="jdbc/hwupload" auth="Container" type="javax.sql.DataSource"
-		username="root" password="passw0rd" driverClassName="com.mysql.jdbc.Driver"
+		username="root" password="roni50602506" driverClassName="com.mysql.jdbc.Driver"
 		url="jdbc:mysql://localhost:3306/hwupload?characterEncoding=UTF-8"
 		maxActive="24" maxIdle="4" poolPreparedStatements="true"
 		maxOpenPreparedStatements="100" />
