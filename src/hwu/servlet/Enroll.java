@@ -7,6 +7,7 @@ import hwu.db.managers.CourseManager;
 import hwu.util.ExcelParser;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class Enroll extends HttpServlet {
 		CourseManager manager = (CourseManager) getServletContext()
 				.getAttribute(CourseManager.ATTRIBUTE_NAME);
 		int course_id = Integer.parseInt(request.getParameter("course_id"));
-		File file = (File)request.getAttribute("datafile");
+		FileInputStream file = (FileInputStream)request.getAttribute("datafile");
 		List<Student> students = new ArrayList<Student>();
 		List<User> tutors = new ArrayList<User>();
 		ExcelParser.getStudentList(file, students, tutors);
