@@ -76,12 +76,8 @@ public class GoogleSign extends HttpServlet {
 				String email_cred = email.substring(0, atSymbolPos);
 				String firstName = jobject.get("given_name").getAsString();
 				String lastName = jobject.get("family_name").getAsString();
-				boolean isStudent = false;
+				boolean isStudent = UserManager.isStudentEmail(email_cred);
 				// constructing new user
-				if (email_cred.length() == 7
-						&& Character.isDigit(email.charAt(5))
-						&& Character.isDigit(email.charAt(6)))
-					isStudent = true;
 				if (isStudent)
 					user = new Student(email_cred, firstName, lastName);
 				else

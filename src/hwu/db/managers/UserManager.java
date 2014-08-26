@@ -103,7 +103,7 @@ public class UserManager extends Manager {
 	 * @param user
 	 */
 	public void makeTutor(User user) {
-		executeSimpleUpdate("users", "tutor", "1", "id", "" + user.getID());
+		executeSimpleUpdate("users", "tutor", "1", "id", ""+user.getID());
 	}
 
 	/**
@@ -172,6 +172,12 @@ public class UserManager extends Manager {
 		}
 		con.close();
 		return students;
+	}
+	
+	public static boolean isStudentEmail(String email) {
+		return email.length() == 7 
+				&& Character.isDigit(email.charAt(5))
+				&& Character.isDigit(email.charAt(6));
 	}
 
 }

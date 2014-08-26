@@ -1,7 +1,9 @@
 package hwu.util;
 
+import hwu.datamodel.users.Lecturer;
 import hwu.datamodel.users.Student;
 import hwu.datamodel.users.User;
+import hwu.db.managers.UserManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,8 +31,14 @@ public class ExcelParser {
 				// adding student (by e-mail)
 				students.add(new Student(cells.next().getStringCellValue()));
 				// adding tutor if any
-				// Student used as Tutor because it has an e-mail only constructor
-				if(cells.hasNext())	tutors.add(new Student(cells.next().getStringCellValue()));
+				if(cells.hasNext()){
+					User tutor;
+					String email = cells.next().getStringCellValue();
+					String email_cred = email.substring(0, email.indexOf('@'));
+					tutor = UserManager.isStudentEmail(email_cred) ? 
+							new Student(email_cred) : new Lecturer(email_cred);
+					tutors.add(tutor);
+				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -4,11 +4,12 @@ import hwu.datamodel.Course;
 import hwu.datamodel.users.Student;
 import hwu.datamodel.users.User;
 import hwu.db.managers.CourseManager;
+import hwu.db.managers.UserManager;
 import hwu.util.ExcelParser;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class Enroll extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
 	}
 
 	/**
@@ -45,20 +47,46 @@ public class Enroll extends HttpServlet {
 		response.setContentType("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		request.setCharacterEncoding("UTF-8");
-		CourseManager manager = (CourseManager) getServletContext()
+		CourseManager cManager = (CourseManager) getServletContext()
 				.getAttribute(CourseManager.ATTRIBUTE_NAME);
+		UserManager uManager = (UserManager) getServletContext()
+				.getAttribute(UserManager.ATTRIBUTE_NAME);
 		int course_id = Integer.parseInt(request.getParameter("course_id"));
 		FileInputStream file = (FileInputStream)request.getAttribute("datafile");
 		List<Student> students = new ArrayList<Student>();
 		List<User> tutors = new ArrayList<User>();
 		ExcelParser.getStudentList(file, students, tutors);
+		
 		if(students.isEmpty()){
 			//TODO: revert to the previous page
+			return;
 		}
+		
+		for(int i = 0; i < students.size(); ++i) {
+			try { 
+				Student st = students.get(i);
+				uManager.tryAddUser(st);
+				students.set(i, (Student) uManager.getUser(st.getEmail()));
+			} 
+			catch (SQLException ignored) { }
+		}
+		for(int i = 0; i < tutors.size(); ++i) {
+			try { 
+				User u = tutors.get(i);
+				uManager.tryAddUser(u);
+				tutors.set(i, uManager.getUser(u.getEmail()));
+				uManager.makeTutor(tutors.get(i));
+			} 
+			catch (SQLException ignored) { }
+		}
+		
+		Course course = new Course(course_id);
+		
+		if(tutors.isEmpty())
+			cManager.enroll(students, course);
 		else{
-			Course course = new Course(course_id);
-			manager.enroll(students, course);
-			//TODO: whatever we do with tutors
+			cManager.addTutorship(tutors, course);
+			cManager.enroll(students, tutors, course);
 		}
 	}
 
