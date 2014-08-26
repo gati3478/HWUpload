@@ -65,6 +65,7 @@ public class Enroll extends HttpServlet {
 		List<Student> students = new ArrayList<Student>();
 		List<User> tutors = new ArrayList<User>();
 		ExcelParser.getStudentList(filecontent, students, tutors);
+		filePart.delete();	 //probably necessary to free up the server storage
 		
 		if(students.isEmpty()){
 			//TODO: revert to the previous page
