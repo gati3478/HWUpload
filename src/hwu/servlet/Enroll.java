@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -72,7 +73,8 @@ public class Enroll extends HttpServlet {
 		
 		if(students.isEmpty()){
 			request.setAttribute(COURSE_CREATION_ERROR_MESSAGE, "ფაილის წაკითხვისას პრობლემა შეიქმნა");
-			response.sendRedirect("enrollment.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("enrollment.jsp");
+			rd.forward(request, response);
 			//TODO: revert to the previous page
 			return;
 		}

@@ -8,6 +8,7 @@ import hwu.db.managers.CourseManager;
 import java.io.IOException;
 import java.sql.Date;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -73,7 +74,8 @@ public class CreateCourse extends HttpServlet {
 				startDate, endDate, lateDaysLen, lateDaysNum, forbidLast));
 		request.setAttribute(COURSE_ID_ATTRIBUTE_NAME, course_id);
 		request.setAttribute(COURSE_CREATION_ERROR_MESSAGE, "");
-		response.sendRedirect("enrollment.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("enrollment.jsp");
+		rd.forward(request, response);
 	}
 
 	private Date constructDate(String day, String month, String year) {
