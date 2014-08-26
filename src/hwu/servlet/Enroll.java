@@ -60,7 +60,6 @@ public class Enroll extends HttpServlet {
 		//int course_id = 1;
 		
 		Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
-	    String filename = getFilename(filePart);
 	    InputStream filecontent = filePart.getInputStream();
 		
 		List<Student> students = new ArrayList<Student>();
@@ -102,14 +101,4 @@ public class Enroll extends HttpServlet {
 		
 	}
 	
-	//retrieves the filename. no idea how.
-	private static String getFilename(Part part) {
-	    for (String cd : part.getHeader("content-disposition").split(";")) {
-	        if (cd.trim().startsWith("filename")) {
-	            String filename = cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
-	            return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1); // MSIE fix.
-	        }
-	    }
-	    return null;
-	}
 }
