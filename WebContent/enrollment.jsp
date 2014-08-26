@@ -11,13 +11,13 @@
 enctype="multipart/form-data" method="post">
 <p>
 შეიყვანეთ კურსის ექსელ ფაილი:<br>
-<input type="file" name="datafile" size="40">
+<input type="file" name="file" size="40">
 </p>
 <div>
 <input type="hidden" name="course" value="<%= request.getParameter("course_id") %>">
 </div>
 <div>
-<input type="submit" value="Send">
+<input type="submit" value="Upload">
 </div>
 </form>
 

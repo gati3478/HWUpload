@@ -7,22 +7,27 @@ import hwu.db.managers.CourseManager;
 import hwu.db.managers.UserManager;
 import hwu.util.ExcelParser;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 /**
  * Servlet implementation class Enroll
  */
 @WebServlet("/Enroll")
+@MultipartConfig
 public class Enroll extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -52,10 +57,15 @@ public class Enroll extends HttpServlet {
 		UserManager uManager = (UserManager) getServletContext()
 				.getAttribute(UserManager.ATTRIBUTE_NAME);
 		int course_id = Integer.parseInt(request.getParameter("course_id"));
-		FileInputStream file = (FileInputStream)request.getAttribute("datafile");
+		//int course_id = 1;
+		
+		Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
+	    String filename = getFilename(filePart);
+	    InputStream filecontent = filePart.getInputStream();
+		
 		List<Student> students = new ArrayList<Student>();
 		List<User> tutors = new ArrayList<User>();
-		ExcelParser.getStudentList(file, students, tutors);
+		ExcelParser.getStudentList(filecontent, students, tutors);
 		
 		if(students.isEmpty()){
 			//TODO: revert to the previous page
@@ -85,9 +95,21 @@ public class Enroll extends HttpServlet {
 		if(tutors.isEmpty())
 			cManager.enroll(students, course);
 		else{
-			cManager.addTutorship(tutors, course);
-			cManager.enroll(students, tutors, course);
+		//	cManager.addTutorship(tutors, course);
+		//	cManager.enroll(students, tutors, course);
 		}
+		
+		
 	}
-
+	
+	//retrieves the filename. no idea how.
+	private static String getFilename(Part part) {
+	    for (String cd : part.getHeader("content-disposition").split(";")) {
+	        if (cd.trim().startsWith("filename")) {
+	            String filename = cd.substring(cd.indexOf('=') + 1).trim().replace("\"", "");
+	            return filename.substring(filename.lastIndexOf('/') + 1).substring(filename.lastIndexOf('\\') + 1); // MSIE fix.
+	        }
+	    }
+	    return null;
+	}
 }

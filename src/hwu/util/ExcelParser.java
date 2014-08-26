@@ -7,6 +7,7 @@ import hwu.db.managers.UserManager;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelParser {
 		
-	public static void getStudentList(FileInputStream file, List<Student> students, List<User> tutors) {
+	public static void getStudentList(InputStream file, List<Student> students, List<User> tutors) {
 		XSSFWorkbook workbook;
 		try {
 			workbook = new XSSFWorkbook(file);
