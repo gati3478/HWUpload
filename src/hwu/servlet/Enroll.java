@@ -30,6 +30,7 @@ import javax.servlet.http.Part;
 @MultipartConfig
 public class Enroll extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	public static final String COURSE_CREATION_ERROR_MESSAGE = "error";
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -56,8 +57,8 @@ public class Enroll extends HttpServlet {
 				.getAttribute(CourseManager.ATTRIBUTE_NAME);
 		UserManager uManager = (UserManager) getServletContext()
 				.getAttribute(UserManager.ATTRIBUTE_NAME);
-		int course_id = Integer.parseInt(request.getParameter("course_id"));
-		//int course_id = 1;
+		//int course_id = Integer.parseInt(request.getParameter("course_id"));
+		int course_id = 1;
 		
 		Part filePart = request.getPart("file"); // Retrieves <input type="file" name="file">
 	    InputStream filecontent = filePart.getInputStream();
@@ -70,6 +71,8 @@ public class Enroll extends HttpServlet {
 		filePart.delete();	 //probably necessary to free up the server storage
 		
 		if(students.isEmpty()){
+			request.setAttribute(COURSE_CREATION_ERROR_MESSAGE, "ფაილის წაკითხვისას პრობლემა შეიქმნა");
+			response.sendRedirect("enrollment.jsp");
 			//TODO: revert to the previous page
 			return;
 		}

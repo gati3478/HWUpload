@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CreateCourse extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	public static final String COURSE_ID_ATTRIBUTE_NAME = "course_id";
+	public static final String COURSE_CREATION_ERROR_MESSAGE = "error";
 
 	public CreateCourse() {
 		super();
@@ -71,6 +72,8 @@ public class CreateCourse extends HttpServlet {
 		int course_id = manager.addCourseToDB(new Course(name, description,
 				startDate, endDate, lateDaysLen, lateDaysNum, forbidLast));
 		request.setAttribute(COURSE_ID_ATTRIBUTE_NAME, course_id);
+		request.setAttribute(COURSE_CREATION_ERROR_MESSAGE, "");
+		response.sendRedirect("enrollment.jsp");
 	}
 
 	private Date constructDate(String day, String month, String year) {
