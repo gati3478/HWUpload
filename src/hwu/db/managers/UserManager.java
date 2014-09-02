@@ -34,9 +34,13 @@ public class UserManager extends Manager {
 	 */
 	public void tryAddUser(User user) throws SQLException {
 		StringBuilder queryBuilder = new StringBuilder();
-		queryBuilder.append("INSERT IGNORE INTO users ");
+		queryBuilder.append("INSERT INTO users ");
 		queryBuilder.append("(email_creds, first_name, last_name, status) ");
-		queryBuilder.append("VALUES (?, ?, ?, ?)");
+		queryBuilder.append("VALUES (?, ?, ?, ?)" );
+		queryBuilder.append("ON DUPLICATE KEY UPDATE ");
+		if(user.getFirstName() != null) 
+			queryBuilder.append("users.first_name = VALUES(first_name), users.last_name = VALUES(last_name)"); 
+		else queryBuilder.append("id=id"); // no change(equivalent to ignore)
 		Connection con = dataSource.getConnection();
 		PreparedStatement statement = con.prepareStatement(queryBuilder
 				.toString());
