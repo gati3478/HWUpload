@@ -5,8 +5,6 @@ import hwu.datamodel.users.Student;
 import hwu.datamodel.users.User;
 import hwu.db.managers.UserManager;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;

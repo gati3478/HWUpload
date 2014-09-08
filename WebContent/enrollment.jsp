@@ -17,7 +17,7 @@ enctype="multipart/form-data" method="post">
 <input type="file" name="file" size="40">
 </p>
 <div>
-<input type="hidden" name="course" value="<%= (String) request.getAttribute("course_id") %>">
+<input type="hidden" name="course" value="<%= (Integer) request.getAttribute("course_id") %>">
 </div>
 <div>
 <input type="submit" value="Upload">
