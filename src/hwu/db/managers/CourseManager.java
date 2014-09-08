@@ -165,14 +165,32 @@ public class CourseManager extends Manager {
 
 	public void enroll(List<Student> students, Course course) {
 		String query = "INSERT INTO course_students(course_id, student_id) "
-				+ "VALUES(" + course.getID()
-				+ ", (SELECT id FROM users WHERE email_creds=?) )";
+				+ "VALUES(" + course.getID() + ", ?)";
 		try {
 			Connection con = dataSource.getConnection();
 			PreparedStatement statement;
 			statement = con.prepareStatement(query);
 			for (Student student : students) {
-				statement.setString(1, student.getEmail());
+				statement.setInt(1, student.getID());
+				statement.executeUpdate();
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void enroll(List<Student> students, List<User> tutors, Course course) {
+		String query = "INSERT INTO course_students(course_id, student_id, tutor_id) "
+				+ "VALUES(" + course.getID() + ", ?, ?)";
+		try {
+			Connection con = dataSource.getConnection();
+			PreparedStatement statement;
+			statement = con.prepareStatement(query);
+			for (int i = 0; i < students.size(); ++i) {
+				statement.setInt(1, students.get(i).getID());
+				statement.setInt(2, tutors.get(i).getID());
 				statement.executeUpdate();
 			}
 			con.close();
@@ -208,4 +226,24 @@ public class CourseManager extends Manager {
 		}
 		return false;
 	}
+
+	public void addTutorship(List<User> tutors, Course course) {
+		try {
+			Connection con = dataSource.getConnection();
+			String query = "INSERT INTO courses_tutors(course_id, tutor_id) VALUES(?, ?)";
+			PreparedStatement statement;
+			for(User tutor: tutors){
+				statement = con.prepareStatement(query);
+				statement.setInt(1, course.getID());
+				statement.setInt(2, tutor.getID());
+				statement.executeUpdate();
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 }
