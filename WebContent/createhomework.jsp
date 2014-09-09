@@ -63,12 +63,8 @@
 		<div>
 			<button>Submit</button>
 		</div>
-		<script src='js/plusminus.js'>
-			
-		</script>
-		<script src='js/timechoice.js'>
-			
-		</script>
+		<script src='js/plusminus.js'></script>
+		<script src='js/timechoice.js'></script>
 	</form>
 </body>
 </html>

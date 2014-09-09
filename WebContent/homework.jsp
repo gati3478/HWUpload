@@ -113,7 +113,8 @@
 								+ thisHomework.getID() + "\">");
 						out.print("<input type=\"hidden\" name=\"course\" value=\""
 								+ thisCourse.getID() + "\">");
-						out.print("<input type=\"submit\" value=\"გადავადების გამოყენება\">");
+						out.print("<input type=\"button\" value=\"გადავადების გამოყენება\" "+
+								"onclick='latedayConfirm(this.form)'>");
 						out.println("</form>");
 					}
 				}
@@ -257,6 +258,7 @@
 					}
 					out.println("</ul>");
 				}
+				out.println("<script src='js/confirm.js'></script>");
 			%>
 		</div>
 	</div>
