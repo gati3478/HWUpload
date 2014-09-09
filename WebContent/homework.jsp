@@ -81,7 +81,7 @@
 				boolean hasAlreadyWritten = false;
 				if (thisHomework.latedaysDisabled()) {
 					out.println("<h4>ამ დავალებაზე გადავადება არ გამოიყენება</h4>");
-				} else if (user instanceof Student) {
+				} else if (user instanceof Student && !manager.isCourseTutor(user, thisCourse)) {
 					hasAlreadyWritten = hwManager.hasWrittenHomework(thisHomework,
 							(Student) user);
 					lateDaysTaken = ldManager.usedLateDaysForHomework(thisHomework,
@@ -117,7 +117,7 @@
 						out.println("</form>");
 					}
 				}
-				if (user instanceof Student) {
+				if (user instanceof Student && !manager.isCourseTutor(user, thisCourse)) {
 					long deadlineTime = deadline.getTime();
 					Timestamp submissionDate = null;
 					if (hasAlreadyWritten) {
@@ -172,7 +172,7 @@
 				}
 			%>
 			<%
-				if (user instanceof Student) {
+				if (user instanceof Student  && !manager.isCourseTutor(user, thisCourse)) {
 					if (deadline.getTime() > System.currentTimeMillis()) {
 						// drawing upload form
 						List<HomeworkForm> forms = hwManager
