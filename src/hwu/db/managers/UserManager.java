@@ -40,7 +40,7 @@ public class UserManager extends Manager {
 		queryBuilder.append("ON DUPLICATE KEY UPDATE ");
 		if(user.getFirstName() != null) 
 			queryBuilder.append("users.first_name = VALUES(first_name), users.last_name = VALUES(last_name)"); 
-		else queryBuilder.append("id=id"); // no change(equivalent to ignore)
+		else queryBuilder.append("first_name=first_name"); // no change(equivalent to ignore)
 		Connection con = dataSource.getConnection();
 		PreparedStatement statement = con.prepareStatement(queryBuilder
 				.toString());
@@ -184,4 +184,9 @@ public class UserManager extends Manager {
 				&& Character.isDigit(email.charAt(6));
 	}
 
+	public static String getCreds(String email) {
+		int atIndex = email.indexOf('@');
+		if(atIndex == -1) return null;
+		return email.substring(0, atIndex);
+	}
 }

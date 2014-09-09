@@ -4,9 +4,12 @@ import hwu.datamodel.Course;
 import hwu.datamodel.users.Lecturer;
 import hwu.datamodel.users.User;
 import hwu.db.managers.CourseManager;
+import hwu.db.managers.UserManager;
+import hwu.util.ExcelParser;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,6 +39,8 @@ public class CreateCourse extends HttpServlet {
 				User.ATTRIBUTE_NAME);
 		CourseManager manager = (CourseManager) request.getServletContext()
 				.getAttribute(CourseManager.ATTRIBUTE_NAME);
+		UserManager uManager = (UserManager) request.getServletContext()
+				.getAttribute(UserManager.ATTRIBUTE_NAME);
 		if (user == null || !(user instanceof Lecturer)) {
 			response.sendRedirect("index.jsp");
 			return;
@@ -72,7 +77,22 @@ public class CreateCourse extends HttpServlet {
 
 		int course_id = manager.addCourseToDB(new Course(name, description,
 				startDate, endDate, lateDaysLen, lateDaysNum, forbidLast));
+		Course course = new Course(course_id);
+		
 		manager.associate(new Course(course_id), user);
+		int i = 0;
+		while(true) {
+			String lectEmail = request.getParameter("lecturer"+i);
+			if(lectEmail == null) break;
+			Lecturer lecturer = null;
+			try {
+				uManager.tryAddUser(new Lecturer(lectEmail)); 
+				lecturer = (Lecturer) uManager.getUser(lectEmail);
+			} 
+			catch (SQLException ignored) {}
+			manager.associate(course, lecturer);
+			++i;
+		} 
 		
 		request.setAttribute(COURSE_ID_ATTRIBUTE_NAME, course_id);
 		request.setAttribute(COURSE_CREATION_ERROR_MESSAGE, "");

@@ -14,39 +14,35 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-
 public class ExcelParser {
-		
-	public static void getStudentList(InputStream file, List<Student> students, List<User> tutors) {
+
+	public static void getStudentList(InputStream file, List<Student> students,
+			List<User> tutors) {
 		XSSFWorkbook workbook;
 		try {
 			workbook = new XSSFWorkbook(file);
 			XSSFSheet sheet = workbook.getSheetAt(0);
 			Iterator<Row> rows = sheet.iterator();
-			while(rows.hasNext()) {
+			while (rows.hasNext()) {
 				Iterator<Cell> cells = rows.next().cellIterator();
 				// name; not needed
 				cells.next();
 				// adding student (by e-mail)
-				students.add(new Student(getCreds(cells.next().getStringCellValue())));
+				students.add(new Student(UserManager.getCreds(cells.next()
+						.getStringCellValue())));
 				// adding tutor if any
-				if(cells.hasNext()){
+				if (cells.hasNext()) {
 					User tutor;
-					String email_cred = getCreds(cells.next().getStringCellValue());
-					tutor = UserManager.isStudentEmail(email_cred) ? 
-							new Student(email_cred) : new Lecturer(email_cred);
+					String email_cred = UserManager.getCreds(cells.next()
+							.getStringCellValue());
+					tutor = UserManager.isStudentEmail(email_cred) ? new Student(
+							email_cred) : new Lecturer(email_cred);
 					tutors.add(tutor);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private static String getCreds(String email) {
-		int atIndex = email.indexOf('@');
-		if(atIndex == -1) return null;
-		return email.substring(0, atIndex);
 	}
 
 }
