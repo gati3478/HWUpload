@@ -1,4 +1,4 @@
-var exts = ["docx", "doc", "xls", "xlsx", "ppt", "cpp", "java", "h", "pdf", "jpeg"];
+var exts = [".docx", ".doc", ".xls", ".xlsx", ".ppt", ".cpp", ".java", ".h", ".pdf", ".jpeg"];
 var n = 0;
 
 function addField()
