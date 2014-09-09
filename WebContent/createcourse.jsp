@@ -12,8 +12,8 @@
 <% 
 	User user = (User) session.getAttribute(User.ATTRIBUTE_NAME);
 	if (user == null || !(user instanceof Lecturer)) {
-	//	response.sendRedirect("index.jsp");
-	//	return;
+		response.sendRedirect("index.jsp");
+		return;
 	}
 %>
 <form action="CreateCourse" method="post">

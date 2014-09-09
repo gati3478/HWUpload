@@ -60,7 +60,8 @@ public class Enroll extends HttpServlet {
 				.getAttribute(CourseManager.ATTRIBUTE_NAME);
 		UserManager uManager = (UserManager) getServletContext().getAttribute(
 				UserManager.ATTRIBUTE_NAME);
-		int course_id = Integer.parseInt(request.getParameter("course_id"));
+		int course_id = Integer.parseInt(request.getParameter
+				(CreateCourse.COURSE_ID_ATTRIBUTE_NAME));
 
 		Part filePart = request.getPart("file"); // Retrieves <input type="file"
 													// name="file">
@@ -88,29 +89,41 @@ public class Enroll extends HttpServlet {
 				Student st = students.get(i);
 				uManager.tryAddUser(st);
 				students.set(i, (Student) uManager.getUser(st.getEmail()));
-			} catch (SQLException ignored) {
-			}
+			} catch (SQLException ignored) {}
 		}
-		for (int i = 0; i < tutors.size(); ++i) {
+		List<User> tutorsWithID = new ArrayList<User>();
+		
+		for(int i = 0; i < tutors.size(); ++i) {
+			User tutor = tutors.get(i);
 			try {
-				User u = tutors.get(i);
-				uManager.tryAddUser(u);
-				tutors.set(i, uManager.getUser(u.getEmail()));
-				uManager.makeTutor(tutors.get(i));
-			} catch (SQLException ignored) {
-			}
+				uManager.tryAddUser(tutor);
+				tutor = uManager.getUser(tutor.getEmail());
+				tutors.set(i, tutor);
+				if(!contains(tutorsWithID, tutor)) {
+					tutorsWithID.add(tutor);
+					uManager.makeTutor(tutor);
+				}
+			} catch (SQLException ignored) {}
 		}
-
+		
 		Course course = new Course(course_id);
 
 		if (tutors.isEmpty())
 			cManager.enroll(students, course);
 		else {
-			// cManager.addTutorship(tutors, course);
-			// cManager.enroll(students, tutors, course);
+			cManager.addTutorship(tutorsWithID, course);
+			cManager.enroll(students, tutors, course);
 		}
 
 		response.sendRedirect("course.jsp?id=" + course_id);
+	}
+
+	private boolean contains(List<User> tutors, User u) {
+		for(User t: tutors) {
+			if(t.getEmail().equals(u.getEmail()))
+				return true;
+		}
+		return false;
 	}
 
 }

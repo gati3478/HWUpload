@@ -72,6 +72,8 @@ public class CreateCourse extends HttpServlet {
 
 		int course_id = manager.addCourseToDB(new Course(name, description,
 				startDate, endDate, lateDaysLen, lateDaysNum, forbidLast));
+		manager.associate(new Course(course_id), user);
+		
 		request.setAttribute(COURSE_ID_ATTRIBUTE_NAME, course_id);
 		request.setAttribute(COURSE_CREATION_ERROR_MESSAGE, "");
 		RequestDispatcher rd = request.getRequestDispatcher("enrollment.jsp");

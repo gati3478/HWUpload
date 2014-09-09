@@ -244,6 +244,30 @@ public class CourseManager extends Manager {
 			e.printStackTrace();
 		}
 	}
+
+	public void associate(Course course, User user) {
+		List<String> columnNames = new ArrayList<String>();
+		List<String> values = new ArrayList<String>();
+		columnNames.add("course_id");
+		columnNames.add("lecturer_id");
+		values.add("" + course.getID());
+		values.add("" + user.getID());
+		executeInsert("courses_lecturers", columnNames, values);
+	}
+	
+	public boolean isCourseTutor(User user, Course course) throws SQLException {
+		boolean result = false;
+		Connection con = dataSource.getConnection();
+		String query = "SELECT * FROM courses_tutors WHERE course_id = ? AND tutor_id = ?;";
+		PreparedStatement stm = con.prepareStatement(query);
+		stm.setInt(1, course.getID());
+		stm.setInt(2, user.getID());
+		ResultSet rs = stm.executeQuery();
+		if (rs.next())
+			result = true;
+		con.close();
+		return result;
+	}
 	
 	
 }

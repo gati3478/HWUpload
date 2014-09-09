@@ -28,12 +28,11 @@ public class ExcelParser {
 				// name; not needed
 				cells.next();
 				// adding student (by e-mail)
-				students.add(new Student(cells.next().getStringCellValue()));
+				students.add(new Student(getCreds(cells.next().getStringCellValue())));
 				// adding tutor if any
 				if(cells.hasNext()){
 					User tutor;
-					String email = cells.next().getStringCellValue();
-					String email_cred = email.substring(0, email.indexOf('@'));
+					String email_cred = getCreds(cells.next().getStringCellValue());
 					tutor = UserManager.isStudentEmail(email_cred) ? 
 							new Student(email_cred) : new Lecturer(email_cred);
 					tutors.add(tutor);
@@ -42,6 +41,12 @@ public class ExcelParser {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static String getCreds(String email) {
+		int atIndex = email.indexOf('@');
+		if(atIndex == -1) return null;
+		return email.substring(0, atIndex);
 	}
 
 }
